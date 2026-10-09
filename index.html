@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlético Estudantil</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#eef5ff;color:#12315a}
+header{background:#0757b8;color:white;text-align:center;padding:28px 15px}
+header h1{margin:0;font-size:30px}
+header p{margin-bottom:0}
+main{max-width:750px;margin:25px auto;padding:0 14px}
+.card{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 18px #12315a15}
+h2{margin-top:0}
+#chat{height:300px;overflow-y:auto;background:#f7faff;border:1px solid #d6e5fa;border-radius:12px;padding:12px}
+.msg{padding:11px 13px;margin:9px 0;border-radius:12px;line-height:1.4;overflow-wrap:anywhere}
+.bot{background:#dceaff}
+.aluno{background:#0757b8;color:white;margin-left:25px}
+form{display:flex;gap:8px;margin-top:12px}
+input{flex:1;min-width:0;padding:12px;border:1px solid #b9cde8;border-radius:10px;font-size:15px}
+button{background:#0757b8;color:white;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
+button:hover{background:#063d82}
+.idea{margin:8px 5px 0 0}
+footer{text-align:center;padding:25px;color:#526984;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>🔵 Atlético Estudantil ⚪</h1>
+<p>Sua voz faz a diferença!</p>
+</header>
+<main>
+<section class="card">
+<h2>💬 Chat de propostas</h2>
+<div id="chat" aria-live="polite">
+<div class="msg bot">Olá! Bem-vindo ao Atlético Estudantil! Escreva sua ideia para melhorar nossa escola.</div>
+</div>
+<form id="form">
+<input id="ideia" maxlength="500" placeholder="Digite sua proposta..." required>
+<button type="submit">Enviar</button>
+</form>
+<p><strong>Experimente uma ideia:</strong></p>
+<button class="idea" type="button" data-idea="Quero criar um clube de estudos.">📚 Clube de estudos</button>
+<button class="idea" type="button" data-idea="Quero mais atividades esportivas.">⚽ Mais esportes</button>
+<button class="idea" type="button" data-idea="Quero ajudar a manter a escola limpa.">🌱 Escola saudável</button>
+</section>
+</main>
+<footer>Atlético Estudantil • Juntos por uma escola melhor!</footer>
+<script>
+const form=document.getElementById('form');
+const input=document.getElementById('ideia');
+const chat=document.getElementById('chat');
+
+function enviarProposta(texto){
+ texto=texto.trim();
+ if(!texto)return;
+ const aluno=document.createElement('div');
+ aluno.className='msg aluno';
+ aluno.textContent=texto;
+ chat.appendChild(aluno);
+
+ const resposta=document.createElement('div');
+ resposta.className='msg bot';
+ resposta.textContent='Obrigado pela ideia! O Grêmio poderá analisar essa proposta e conversar com a direção sobre como realizá-la.';
+ chat.appendChild(resposta);
+ chat.scrollTop=chat.scrollHeight;
+ input.value='';
+ input.focus();
+}
+
+form.addEventListener('submit',function(e){
+ e.preventDefault();
+ enviarProposta(input.value);
+});
+
+document.querySelectorAll('[data-idea]').forEach(function(botao){
+ botao.addEventListener('click',function(){
+ enviarProposta(botao.dataset.idea);
+ });
+});
+</script>
+</body>
+</html>
