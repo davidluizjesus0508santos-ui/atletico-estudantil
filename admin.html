@@ -3,344 +3,246 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Administração | Atlético Estudantil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo | Atlético Estudantil</title>
   <style>
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
+      padding: 24px;
       font-family: Arial, sans-serif;
-      color: #172033;
-      background: #f3f6fb;
-    }
-
-    header {
-      padding: 26px 16px;
-      text-align: center;
-      background: #123b73;
+      background: #0b1220;
       color: white;
     }
-
     main {
-      width: min(950px, calc(100% - 24px));
-      margin: 25px auto;
+      max-width: 800px;
+      margin: 30px auto;
     }
-
-    section {
-      padding: 22px;
-      margin-bottom: 20px;
-      border-radius: 14px;
-      background: white;
-      box-shadow: 0 3px 14px #152d5010;
-    }
-
-    h2 { color: #123b73; }
-
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      margin-top: 5px;
-      padding: 12px;
-      border: 1px solid #bdc8d8;
-      border-radius: 8px;
-      font: inherit;
-    }
-
-    button {
-      padding: 10px 14px;
-      border: 0;
-      border-radius: 8px;
-      background: #123b73;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:disabled { opacity: .6; }
-
-    .acoes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .cartao {
-      margin-top: 14px;
-      padding: 18px;
-      border: 1px solid #dce3ed;
+    section, .proposta {
+      background: #172238;
+      border: 1px solid #34435c;
       border-radius: 12px;
-      overflow-wrap: anywhere;
+      padding: 20px;
+      margin-bottom: 16px;
     }
-
-    .cartao h3 { margin-top: 0; }
-
-    .status {
-      display: inline-block;
-      padding: 4px 9px;
-      border-radius: 20px;
-      background: #eaf2ff;
-      color: #123b73;
-      font-size: 13px;
+    input, button, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #52627a;
+      font-size: 16px;
     }
-
-    #mensagem {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      margin-top: 12px;
+    button {
+      background: #2563eb;
+      color: white;
+      border: 0;
+      cursor: pointer;
+      font-weight: bold;
     }
-
-    .erro { color: #a11919; }
-    .sucesso { color: #146c43; }
-    .oculto { display: none !important; }
-
-    .aviso {
-      color: #4b5563;
-      font-size: 14px;
-    }
+    button:disabled { opacity: .6; cursor: wait; }
+    .mensagem { overflow-wrap: anywhere; }
+    .erro { color: #ff9999; }
+    .sucesso { color: #86efac; }
+    .muted { color: #c1ccdd; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🏆 Atlético Estudantil</h1>
-    <p>Painel de administração</p>
-  </header>
+<main>
+  <h1>🏆 Atlético Estudantil</h1>
+  <p class="muted">Painel administrativo</p>
 
-  <main>
-    <section id="login">
-      <h2>Entrar</h2>
-      <p>Use sua conta autorizada pela equipe responsável.</p>
+  <section id="login">
+    <h2>Entrar</h2>
+    <form id="formLogin">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" autocomplete="username"
+             placeholder="Seu e-mail" required>
 
-      <form id="formLogin">
-        <label for="email">E-mail</label>
-        <input id="email" type="email" autocomplete="username" required>
+      <label for="senha">Senha</label>
+      <input id="senha" type="password"
+             autocomplete="current-password"
+             placeholder="Sua senha" required>
 
-        <label for="senha">Senha</label>
-        <input id="senha" type="password"
-          autocomplete="current-password" required>
+      <button id="botaoEntrar" type="submit">Entrar no painel</button>
+    </form>
+    <p id="msgLogin" class="mensagem" role="status"></p>
+  </section>
 
-        <div class="acoes">
-          <button id="botaoLogin" type="submit">Entrar</button>
-        </div>
-      </form>
-      <p class="aviso">
-        Somente contas autorizadas devem ter acesso às propostas.
-      </p>
-    </section>
+  <section id="painel" hidden>
+    <h2>Propostas recebidas</h2>
+    <p id="usuarioLogado" class="muted"></p>
+    <button id="botaoAtualizar" type="button">Atualizar propostas</button>
+    <p id="msgPainel" class="mensagem" role="status"></p>
+    <div id="lista"></div>
+    <button id="botaoSair" type="button">Sair</button>
+  </section>
+</main>
 
-    <section id="painel" class="oculto">
-      <h2>Propostas recebidas</h2>
-      <p id="usuarioAtual"></p>
+<script type="module">
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-      <div class="acoes">
-        <button id="atualizar" type="button">Atualizar propostas</button>
-        <button id="sair" type="button">Sair</button>
-      </div>
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-      <p class="aviso">
-        As propostas são confidenciais. Compartilhe o acesso apenas
-        com os responsáveis autorizados pela escola.
-      </p>
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-      <div id="lista"></div>
-    </section>
+const firebaseConfig = {
+  apiKey: "AIzaSyAm20hYu_9kWN8YwmkSPVoO5FVZwPRzysg",
+  authDomain: "atletico-estudantil.firebaseapp.com",
+  projectId: "atletico-estudantil",
+  storageBucket: "atletico-estudantil.firebasestorage.app",
+  messagingSenderId: "1059932469682",
+  appId: "1:1059932469682:web:dadf2643c3b250903fccab",
+  measurementId: "G-25XHNCC6H1"
+};
 
-    <section>
-      <p id="mensagem" role="status" aria-live="polite"></p>
-    </section>
-  </main>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  <script type="module">
-    import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+const $ = id => document.getElementById(id);
 
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut
-    } from
-      "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+function informar(id, texto, tipo = "") {
+  $(id).textContent = texto;
+  $(id).className = "mensagem " + tipo;
+}
 
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      query,
-      orderBy,
-      doc,
-      updateDoc
-    } from
-      "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+function mensagemErro(erro) {
+  return `${erro.code || "sem-código"}: ${erro.message || "Erro desconhecido"}`;
+}
 
-    const firebaseConfig = {
-      apiKey: "COLE_A_API_KEY_REAL_DO_FIREBASE",
-      authDomain: "atletico-estudantil.firebaseapp.com",
-      projectId: "atletico-estudantil",
-      storageBucket: "atletico-estudantil.firebasestorage.app",
-      messagingSenderId: "1059932469682",
-      appId: "1:1059932469682:web:dadf2643c3b250903fccab",
-      measurementId: "G-25XHNCC6H1"
-    };
+$("formLogin").addEventListener("submit", async evento => {
+  evento.preventDefault();
+  const botao = $("botaoEntrar");
+  botao.disabled = true;
+  informar("msgLogin", "Verificando login...");
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const login = document.getElementById("login");
-    const painel = document.getElementById("painel");
-    const formLogin = document.getElementById("formLogin");
-    const botaoLogin = document.getElementById("botaoLogin");
-    const mensagem = document.getElementById("mensagem");
-    const lista = document.getElementById("lista");
-
-    function informar(texto, tipo = "") {
-      mensagem.textContent = texto;
-      mensagem.className = tipo;
-    }
-
-    function textoSeguro(tag, texto) {
-      const elemento = document.createElement(tag);
-      elemento.textContent = texto || "";
-      return elemento;
-    }
-
-    formLogin.addEventListener("submit", async (evento) => {
-      evento.preventDefault();
-
-      if (firebaseConfig.apiKey === apiKe") {
-        informar("Configure a apiKey real do Firebase nos dois arquivos.", "erro");
-        return;
-      }
-
-      botaoLogin.disabled = true;
-      informar("Entrando...");
-
-      try {
-        await signInWithEmailAndPassword(
-          auth,
-          document.getElementById("email").value.trim(),
-          document.getElementById("senha").value
-        );
-      } 
-catch (erro) {
-  informar("Erro do Firebase: " + erro.code + " — " + erro.message, "erro");
-
-      } finally {
-        botaoLogin.disabled = false;
-      }
-    });
-
-    onAuthStateChanged(auth, async (usuario) => {
-      lista.replaceChildren();
-
-      if (!usuario) {
-        login.classList.remove("oculto");
-        painel.classList.add("oculto");
-        return;
-      }
-
-      login.classList.add("oculto");
-      painel.classList.remove("oculto");
-      document.getElementById("usuarioAtual").textContent =
-        "Conta conectada: " + (usuario.email || "administrador");
-
-      await carregarPropostas();
-    });
-
-    async function carregarPropostas() {
-      lista.replaceChildren();
-      informar("Carregando propostas...");
-
-      try {
-        const consulta = query(
-          collection(db, "propostas"),
-          orderBy("criadaEm", "desc")
-        );
-        const resultado = await getDocs(consulta);
-
-        if (resultado.empty) {
-          informar("Nenhuma proposta encontrada.");
-          return;
-        }
-
-        resultado.forEach((registro) => {
-          const dados = registro.data();
-          const cartao = document.createElement("article");
-          cartao.className = "cartao";
-
-          cartao.append(
-            textoSeguro("h3", dados.titulo),
-            textoSeguro("p", "Categoria: " + (dados.categoria || "Não informada")),
-            textoSeguro("p", dados.descricao),
-            textoSeguro("p", "Status: " + (dados.status || "pendente"))
-          );
-
-          const seletor = document.createElement("select");
-          seletor.setAttribute("aria-label", "Alterar status da proposta");
-          [
-            ["pendente", "Pendente"],
-            ["em_analise", "Em análise"],
-            ["aprovada", "Aprovada"],
-            ["recusada", "Não aprovada"],
-            ["concluida", "Concluída"]
-          ].forEach(([valor, rotulo]) => {
-            const opcao = document.createElement("option");
-            opcao.value = valor;
-            opcao.textContent = rotulo;
-            seletor.append(opcao);
-          });
-          seletor.value = dados.status || "pendente";
-
-          const salvar = document.createElement("button");
-          salvar.type = "button";
-          salvar.textContent = "Salvar status";
-
-          salvar.addEventListener("click", async () => {
-            salvar.disabled = true;
-            try {
-              await updateDoc(doc(db, "propostas", registro.id), {
-                status: seletor.value
-              });
-              informar("Status atualizado.", "sucesso");
-            } catch (erro) {
-              informar("Não foi possível alterar. Confira as permissões do Firestore.", "erro");
-            } finally {
-              salvar.disabled = false;
-            }
-          });
-
-          const acoes = document.createElement("div");
-          acoes.className = "acoes";
-          acoes.append(seletor, salvar);
-          cartao.append(acoes);
-          lista.append(cartao);
-        });
-
-        informar("Propostas carregadas: " + resultado.size, "sucesso");
-      } catch (erro) {
-        console.error(erro);
-        informar(
-          "Não foi possível carregar as propostas. O acesso pode estar bloqueado pelas regras do Firestore.",
-          "erro"
-        );
-      }
-    }
-
-    document.getElementById("atualizar").addEventListener(
-      "click", carregarPropostas
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      $("email").value.trim(),
+      $("senha").value
     );
+    informar("msgLogin", "Login realizado!", "sucesso");
+  } catch (erro) {
+    informar("msgLogin", "Falha no login: " + mensagemErro(erro), "erro");
+  } finally {
+    botao.disabled = false;
+  }
+});
 
-    document.getElementById("sair").addEventListener("click", async () => {
-      await signOut(auth);
-      informar("Você saiu do painel.");
+onAuthStateChanged(auth, async usuario => {
+  $("login").hidden = !!usuario;
+  $("painel").hidden = !usuario;
+
+  if (usuario) {
+    $("usuarioLogado").textContent =
+      "Conectado como: " + usuario.email;
+    await carregarPropostas();
+  } else {
+    $("lista").replaceChildren();
+    informar("msgLogin", "");
+  }
+});
+
+async function carregarPropostas() {
+  informar("msgPainel", "Carregando propostas...");
+  $("botaoAtualizar").disabled = true;
+  $("lista").replaceChildren();
+
+  try {
+    const consulta = query(
+      collection(db, "propostas"),
+      orderBy("criadaEm", "desc")
+    );
+    const resultado = await getDocs(consulta);
+
+    if (resultado.empty) {
+      informar("msgPainel", "Nenhuma proposta encontrada.", "sucesso");
+      return;
+    }
+
+    informar("msgPainel", resultado.size + " proposta(s) encontrada(s).",
+      "sucesso");
+
+    resultado.forEach(item => {
+      const dados = item.data();
+      const caixa = document.createElement("article");
+      caixa.className = "proposta";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = dados.titulo || "Sem título";
+
+      const categoria = document.createElement("p");
+      categoria.textContent = "Categoria: " + (dados.categoria || "Não informada");
+
+      const descricao = document.createElement("p");
+      descricao.textContent = dados.descricao || "Sem descrição";
+
+      const status = document.createElement("p");
+      status.textContent = "Status atual: " + (dados.status || "pendente");
+
+      const seletor = document.createElement("select");
+      ["pendente", "em análise", "aprovada", "recusada"].forEach(opcao => {
+        const itemOpcao = document.createElement("option");
+        itemOpcao.value = opcao;
+        itemOpcao.textContent = opcao;
+        seletor.appendChild(itemOpcao);
+      });
+      seletor.value = dados.status || "pendente";
+
+      const salvar = document.createElement("button");
+      salvar.textContent = "Salvar status";
+      salvar.addEventListener("click", async () => {
+        salvar.disabled = true;
+        try {
+          await updateDoc(doc(db, "propostas", item.id), {
+            status: seletor.value
+          });
+          status.textContent = "Status atual: " + seletor.value;
+          informar("msgPainel", "Status atualizado!", "sucesso");
+        } catch (erro) {
+          informar("msgPainel", "Falha ao salvar: " + mensagemErro(erro), "erro");
+        } finally {
+          salvar.disabled = false;
+        }
+      });
+
+      caixa.append(titulo, categoria, descricao, status, seletor, salvar);
+      $("lista").appendChild(caixa);
     });
-  </script>
+  } catch (erro) {
+    informar("msgPainel",
+      "Não foi possível carregar as propostas: " + mensagemErro(erro),
+      "erro");
+  } finally {
+    $("botaoAtualizar").disabled = false;
+  }
+}
+
+$("botaoAtualizar").addEventListener("click", carregarPropostas);
+
+$("botaoSair").addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+  } catch (erro) {
+    informar("msgPainel", "Erro ao sair: " + mensagemErro(erro), "erro");
+  }
+});
+</script>
 </body>
 </html>
