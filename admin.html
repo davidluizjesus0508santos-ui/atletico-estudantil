@@ -228,8 +228,10 @@
           document.getElementById("email").value.trim(),
           document.getElementById("senha").value
         );
-      } catch (erro) {
-        informar("Não foi possível entrar. Confira os dados e a configuração do Firebase.", "erro");
+      } 
+catch (erro) {
+  informar("Erro do Firebase: " + erro.code + " — " + erro.message, "erro");
+
       } finally {
         botaoLogin.disabled = false;
       }
