@@ -2,303 +2,191 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atlético Estudantil</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #eef4ff;
-  color: #183153;
-}
-
-header {
-  background: linear-gradient(135deg, #0757b7, #2789ed);
-  color: white;
-  text-align: center;
-  padding: 28px 15px;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 30px;
-}
-
-header p {
-  margin-bottom: 0;
-}
-
-main {
-  max-width: 800px;
-  margin: 25px auto;
-  padding: 0 14px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px #18315318;
-  margin-bottom: 20px;
-}
-
-h2 {
-  margin-top: 0;
-}
-
-#chat {
-  height: 300px;
-  overflow-y: auto;
-  border: 1px solid #d8e5f8;
-  border-radius: 12px;
-  padding: 12px;
-  background: #f8fbff;
-  margin-bottom: 12px;
-}
-
-.msg {
-  padding: 11px 13px;
-  margin: 9px 0;
-  border-radius: 12px;
-  overflow-wrap: anywhere;
-  line-height: 1.4;
-}
-
-.bot {
-  background: #e2edff;
-}
-
-.aluno {
-  background: #0877d8;
-  color: white;
-  margin-left: 25px;
-}
-
-form {
-  display: flex;
-  gap: 8px;
-}
-
-input {
-  flex: 1;
-  min-width: 0;
-  padding: 12px;
-  border: 1px solid #b9cde8;
-  border-radius: 10px;
-  font-size: 15px;
-}
-
-button {
-  border: none;
-  border-radius: 10px;
-  padding: 12px 15px;
-  background: #0877d8;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0457a5;
-}
-
-.ideias {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.ideias button {
-  font-size: 13px;
-}
-
-.secundario {
-  background: #e7effb;
-  color: #174574;
-}
-
-.secundario:hover {
-  background: #d1e2fa;
-}
-
-.acoes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-#contador {
-  font-weight: bold;
-  color: #0757b7;
-}
-
-footer {
-  text-align: center;
-  padding: 22px;
-  color: #526984;
-  font-size: 13px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atlético Estudantil</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #172033;
+    }
+    header {
+      background: #102b50;
+      color: white;
+      text-align: center;
+      padding: 30px 16px;
+    }
+    header h1 { margin: 0 0 8px; }
+    main { max-width: 850px; margin: 25px auto; padding: 0 16px; }
+    section {
+      background: white;
+      padding: 22px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #00000012;
+    }
+    h2 { color: #102b50; }
+    .proposal {
+      border-left: 4px solid #2878d0;
+      padding: 12px;
+      margin: 12px 0;
+      background: #f5f8fc;
+      border-radius: 5px;
+    }
+    label { display: block; margin-top: 14px; font-weight: bold; }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 7px;
+      border-radius: 7px;
+      font-size: 16px;
+    }
+    input, textarea, select { border: 1px solid #cbd5e1; }
+    textarea { min-height: 110px; resize: vertical; }
+    button {
+      border: 0;
+      color: white;
+      background: #1768bd;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 18px;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    #status { margin-top: 15px; line-height: 1.5; }
+    footer { text-align: center; padding: 20px; color: #64748b; }
+  </style>
 </head>
-
 <body>
+  <header>
+    <h1>Atlético Estudantil</h1>
+    <p>Participação, ideias e melhorias para nossa escola.</p>
+  </header>
 
-<header>
-  <h1>🔵 Atlético Estudantil ⚪</h1>
-  <p>Sua voz faz a diferença!</p>
-</header>
+  <main>
+    <section>
+      <h2>Como participar</h2>
+      <p>Confira as propostas e envie uma ideia para ajudar a melhorar a escola.</p>
+    </section>
 
-<main>
-  <section class="card">
-    <h2>💬 Chat de propostas</h2>
+    <section>
+      <h2>Nossas propostas</h2>
+      <div class="proposal"><strong>1. Feira de profissões</strong><p>Conhecer profissões e possibilidades para o futuro.</p></div>
+      <div class="proposal"><strong>2. Torneios esportivos</strong><p>Organizar competições entre turmas.</p></div>
+      <div class="proposal"><strong>3. Clube de estudos</strong><p>Promover grupos de estudo entre estudantes.</p></div>
+      <div class="proposal"><strong>4. Sessão de cinema</strong><p>Organizar sessões com autorização da escola.</p></div>
+      <div class="proposal"><strong>5. Feira de ciências</strong><p>Apresentar experiências e projetos científicos.</p></div>
+      <div class="proposal"><strong>6. Campeonato de matemática</strong><p>Resolver desafios em equipe.</p></div>
+      <div class="proposal"><strong>7. Clube de leitura</strong><p>Compartilhar livros e recomendações.</p></div>
+      <div class="proposal"><strong>8. Oficinas de tecnologia</strong><p>Aprender programação e ferramentas digitais.</p></div>
+      <div class="proposal"><strong>9. Gincana solidária</strong><p>Realizar ações colaborativas autorizadas pela escola.</p></div>
+      <div class="proposal"><strong>10. Exposição de arte</strong><p>Exibir desenhos, fotografias e trabalhos dos alunos.</p></div>
+      <div class="proposal"><strong>11. Campeonato de jogos de tabuleiro</strong><p>Estimular estratégia e convivência.</p></div>
+      <div class="proposal"><strong>12. Mural de oportunidades</strong><p>Divulgar concursos, olimpíadas e atividades escolares.</p></div>
+      <div class="proposal"><strong>13. Semana cultural</strong><p>Compartilhar culturas, histórias e talentos.</p></div>
+      <div class="proposal"><strong>14. Clube de robótica</strong><p>Construir e programar projetos de robótica.</p></div>
+      <div class="proposal"><strong>15. Oficinas de escrita</strong><p>Praticar redação, poesia e produção de textos.</p></div>
+      <div class="proposal"><strong>16. Desafios de ciências</strong><p>Propor atividades científicas educativas e seguras.</p></div>
+      <div class="proposal"><strong>17. Campanha de organização</strong><p>Incentivar o cuidado com os espaços escolares.</p></div>
+      <div class="proposal"><strong>18. Divulgação das olimpíadas</strong><p>Informar datas e formas de participação.</p></div>
+      <div class="proposal"><strong>19. Rodas de conversa</strong><p>Debater sugestões para melhorar a convivência.</p></div>
+      <div class="proposal"><strong>20. Caixa de sugestões digital</strong><p>Receber ideias para avaliação da equipe responsável.</p></div>
+    </section>
 
-    <div id="chat" aria-live="polite"></div>
+    <section>
+      <h2>Mande uma proposta</h2>
+      <p>Não informe endereço, telefone ou outros dados pessoais.</p>
+      <form id="proposalForm">
+        <label for="category">Categoria</label>
+        <select id="category" required>
+          <option value="">Selecione</option>
+          <option>Estudos</option>
+          <option>Esportes</option>
+          <option>Cultura</option>
+          <option>Tecnologia</option>
+          <option>Convivência</option>
+          <option>Outra ideia</option>
+        </select>
 
-    <form id="form">
-      <input
-        id="ideia"
-        type="text"
-        placeholder="Digite sua proposta..."
-        maxlength="500"
-        required
-      >
-      <button type="submit">Enviar</button>
-    </form>
+        <label for="title">Título da proposta</label>
+        <input id="title" maxlength="80" required placeholder="Ex.: Torneio de xadrez">
 
-    <h3>💡 Experimente uma ideia:</h3>
-    <div class="ideias">
-      <button type="button" data-ideia="Quero um clube de estudos.">📚 Clube de estudos</button>
-      <button type="button" data-ideia="Quero mais atividades esportivas.">⚽ Mais esportes</button>
-      <button type="button" data-ideia="Quero ajudar a manter a escola limpa.">🌱 Escola saudável</button>
-      <button type="button" data-ideia="Quero uma feira de profissões.">🎓 Feira de profissões</button>
-      <button type="button" data-ideia="Quero uma sessão de cinema na escola.">🎬 Cinema escolar</button>
-      <button type="button" data-ideia="Quero uma caixa de sugestões dos alunos.">📮 Caixa de sugestões</button>
-    </div>
-  </section>
+        <label for="description">Explique sua ideia</label>
+        <textarea id="description" maxlength="1500" required placeholder="Como a ideia poderia funcionar?"></textarea>
 
-  <section class="card">
-    <h2>📋 Minhas propostas</h2>
-    <p>Propostas salvas neste navegador: <span id="contador">0</span></p>
+        <button id="submitButton" type="submit">Enviar proposta</button>
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
 
-    <div class="acoes">
-      <button id="ver" type="button">Ver propostas salvas</button>
-      <button id="limpar" class="secundario" type="button">Limpar propostas</button>
-    </div>
-  </section>
-</main>
+  <footer>Atlético Estudantil · Ideias para construir juntos</footer>
 
-<footer>
-  Atlético Estudantil • Juntos por uma escola melhor!
-</footer>
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import {
+      getFirestore, collection, addDoc, serverTimestamp
+    } from
+      "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
-<script>
-const CHAVE = "atleticoEstudantilPropostas";
-const chat = document.getElementById("chat");
-const form = document.getElementById("form");
-const input = document.getElementById("ideia");
-const contador = document.getElementById("contador");
+    // Substitua pelos valores do seu firebaseConfig no Console Firebase.
+    const firebaseConfig = {
+      apiKey: "COLE_SUA_API_KEY",
+      authDomain: "atletico-estudantil.firebaseapp.com",
+      projectId: "atletico-estudantil",
+      storageBucket: "COLE_SEU_STORAGE_BUCKET",
+      messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID",
+      appId: "COLE_SEU_APP_ID"
+    };
 
-function obterPropostas() {
-  try {
-    return JSON.parse(localStorage.getItem(CHAVE)) || [];
-  } catch {
-    return [];
-  }
-}
+    const form = document.getElementById("proposalForm");
+    const button = document.getElementById("submitButton");
+    const status = document.getElementById("status");
 
-function salvarPropostas(propostas) {
-  localStorage.setItem(CHAVE, JSON.stringify(propostas));
-  atualizarContador();
-}
+    let db;
 
-function atualizarContador() {
-  contador.textContent = obterPropostas().length;
-}
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+    } catch (error) {
+      console.error("Erro ao iniciar Firebase:", error);
+    }
 
-function adicionarMensagem(texto, tipo) {
-  const mensagem = document.createElement("div");
-  mensagem.className = "msg " + tipo;
-  mensagem.textContent = texto;
-  chat.appendChild(mensagem);
-  chat.scrollTop = chat.scrollHeight;
-}
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-function enviarProposta(texto) {
-  texto = texto.trim();
+      if (!db || firebaseConfig.apiKey === "COLE_SUA_API_KEY") {
+        status.textContent =
+          "O site ainda precisa da configuração correta do Firebase.";
+        return;
+      }
 
-  if (!texto) return;
+      button.disabled = true;
+      status.textContent = "Enviando sua proposta...";
 
-  const propostas = obterPropostas();
+      try {
+        await addDoc(collection(db, "propostas"), {
+          categoria: document.getElementById("category").value,
+          titulo: document.getElementById("title").value.trim(),
+          descricao: document.getElementById("description").value.trim(),
+          status: "pendente",
+          criadaEm: serverTimestamp()
+        });
 
-  propostas.push({
-    texto: texto,
-    data: new Date().toLocaleString("pt-BR")
-  });
-
-  salvarPropostas(propostas);
-
-  adicionarMensagem(texto, "aluno");
-  adicionarMensagem(
-    "Obrigado pela ideia! Ela ficou salva neste navegador. O Grêmio poderá analisá-la quando tiver acesso a ela.",
-    "bot"
-  );
-
-  input.value = "";
-  input.focus();
-}
-
-form.addEventListener("submit", function(event) {
-  event.preventDefault();
-  enviarProposta(input.value);
-});
-
-document.querySelectorAll("[data-ideia]").forEach(function(botao) {
-  botao.addEventListener("click", function() {
-    enviarProposta(botao.dataset.ideia);
-  });
-});
-
-document.getElementById("ver").addEventListener("click", function() {
-  const propostas = obterPropostas();
-  chat.replaceChildren();
-
-  if (propostas.length === 0) {
-    adicionarMensagem("Você ainda não salvou nenhuma proposta.", "bot");
-    return;
-  }
-
-  propostas.forEach(function(proposta, indice) {
-    adicionarMensagem(
-      (indice + 1) + ". " + proposta.texto + " — " + proposta.data,
-      "aluno"
-    );
-  });
-});
-
-document.getElementById("limpar").addEventListener("click", function() {
-  if (confirm("Tem certeza de que deseja apagar todas as propostas salvas neste navegador?")) {
-    localStorage.removeItem(CHAVE);
-    chat.replaceChildren();
-    atualizarContador();
-    adicionarMensagem("As propostas locais foram apagadas.", "bot");
-  }
-});
-
-adicionarMensagem(
-  "Olá! Bem-vindo ao Atlético Estudantil. Escreva sua ideia para melhorar nossa escola!",
-  "bot"
-);
-
-atualizarContador();
-</script>
-
+        form.reset();
+        status.textContent =
+          "Proposta enviada com sucesso! Ela será analisada pela equipe responsável.";
+      } catch (error) {
+        console.error("Erro ao enviar proposta:", error);
+        status.textContent =
+          "Não foi possível enviar. Verifique a conexão e as regras do banco com o responsável pelo projeto.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
