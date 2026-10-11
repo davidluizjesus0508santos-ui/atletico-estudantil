@@ -3,188 +3,375 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Atlético Estudantil</title>
   <style>
+    :root {
+      --azul: #123b73;
+      --azul-claro: #eaf2ff;
+      --fundo: #f4f7fb;
+      --texto: #172033;
+      --verde: #16784a;
+    }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      color: #172033;
+      background: var(--fundo);
+      color: var(--texto);
+      line-height: 1.6;
     }
+
     header {
-      background: #102b50;
+      background: var(--azul);
       color: white;
+      padding: 32px 18px;
       text-align: center;
-      padding: 30px 16px;
     }
-    header h1 { margin: 0 0 8px; }
-    main { max-width: 850px; margin: 25px auto; padding: 0 16px; }
-    section {
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 42px);
+    }
+
+    header p { margin-bottom: 0; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 14px;
       background: white;
-      padding: 22px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px #00000012;
+      border-bottom: 1px solid #dce3ed;
     }
-    h2 { color: #102b50; }
-    .proposal {
-      border-left: 4px solid #2878d0;
-      padding: 12px;
-      margin: 12px 0;
-      background: #f5f8fc;
-      border-radius: 5px;
+
+    nav a {
+      color: var(--azul);
+      font-weight: bold;
+      text-decoration: none;
+      padding: 8px 12px;
     }
-    label { display: block; margin-top: 14px; font-weight: bold; }
-    input, textarea, select, button {
+
+    main {
+      width: min(100% - 28px, 1000px);
+      margin: 28px auto;
+    }
+
+    section {
+      margin-bottom: 28px;
+      padding: 24px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 3px 14px #152d5010;
+    }
+
+    h2 { color: var(--azul); }
+
+    .propostas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .proposta {
+      padding: 16px;
+      background: var(--azul-claro);
+      border-left: 4px solid var(--azul);
+      border-radius: 10px;
+    }
+
+    .proposta h3 {
+      margin: 0 0 8px;
+      color: var(--azul);
+      font-size: 17px;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    label { font-weight: bold; }
+
+    input, select, textarea {
+      display: block;
       width: 100%;
+      margin-top: 5px;
       padding: 12px;
-      margin-top: 7px;
-      border-radius: 7px;
-      font-size: 16px;
+      border: 1px solid #b9c5d5;
+      border-radius: 8px;
+      font: inherit;
     }
-    input, textarea, select { border: 1px solid #cbd5e1; }
-    textarea { min-height: 110px; resize: vertical; }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
     button {
       border: 0;
+      border-radius: 9px;
+      padding: 13px 18px;
+      background: var(--azul);
       color: white;
-      background: #1768bd;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 18px;
     }
-    button:disabled { opacity: .6; cursor: wait; }
-    #status { margin-top: 15px; line-height: 1.5; }
-    footer { text-align: center; padding: 20px; color: #64748b; }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    #mensagem {
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    #mensagem.sucesso {
+      display: block;
+      color: #14532d;
+      background: #dcfce7;
+    }
+
+    #mensagem.erro {
+      display: block;
+      color: #991b1b;
+      background: #fee2e2;
+    }
+
+    .aviso {
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #526078;
+    }
   </style>
 </head>
+
 <body>
   <header>
-    <h1>Atlético Estudantil</h1>
-    <p>Participação, ideias e melhorias para nossa escola.</p>
+    <h1>🏆 Atlético Estudantil</h1>
+    <p>Ideias, participação e melhorias para nossa escola!</p>
   </header>
 
+  <nav>
+    <a href="#inicio">Início</a>
+    <a href="#propostas">20 propostas</a>
+    <a href="#enviar">Mande uma proposta</a>
+  </nav>
+
   <main>
-    <section>
-      <h2>Como participar</h2>
-      <p>Confira as propostas e envie uma ideia para ajudar a melhorar a escola.</p>
+    <section id="inicio">
+      <h2>Bem-vindo ao Atlético Estudantil!</h2>
+      <p>
+        Este é um espaço para conhecer as propostas do projeto e sugerir
+        melhorias para a vida escolar. A participação dos estudantes
+        ajuda a construir uma escola cada vez melhor.
+      </p>
     </section>
 
-    <section>
-      <h2>Nossas propostas</h2>
-      <div class="proposal"><strong>1. Feira de profissões</strong><p>Conhecer profissões e possibilidades para o futuro.</p></div>
-      <div class="proposal"><strong>2. Torneios esportivos</strong><p>Organizar competições entre turmas.</p></div>
-      <div class="proposal"><strong>3. Clube de estudos</strong><p>Promover grupos de estudo entre estudantes.</p></div>
-      <div class="proposal"><strong>4. Sessão de cinema</strong><p>Organizar sessões com autorização da escola.</p></div>
-      <div class="proposal"><strong>5. Feira de ciências</strong><p>Apresentar experiências e projetos científicos.</p></div>
-      <div class="proposal"><strong>6. Campeonato de matemática</strong><p>Resolver desafios em equipe.</p></div>
-      <div class="proposal"><strong>7. Clube de leitura</strong><p>Compartilhar livros e recomendações.</p></div>
-      <div class="proposal"><strong>8. Oficinas de tecnologia</strong><p>Aprender programação e ferramentas digitais.</p></div>
-      <div class="proposal"><strong>9. Gincana solidária</strong><p>Realizar ações colaborativas autorizadas pela escola.</p></div>
-      <div class="proposal"><strong>10. Exposição de arte</strong><p>Exibir desenhos, fotografias e trabalhos dos alunos.</p></div>
-      <div class="proposal"><strong>11. Campeonato de jogos de tabuleiro</strong><p>Estimular estratégia e convivência.</p></div>
-      <div class="proposal"><strong>12. Mural de oportunidades</strong><p>Divulgar concursos, olimpíadas e atividades escolares.</p></div>
-      <div class="proposal"><strong>13. Semana cultural</strong><p>Compartilhar culturas, histórias e talentos.</p></div>
-      <div class="proposal"><strong>14. Clube de robótica</strong><p>Construir e programar projetos de robótica.</p></div>
-      <div class="proposal"><strong>15. Oficinas de escrita</strong><p>Praticar redação, poesia e produção de textos.</p></div>
-      <div class="proposal"><strong>16. Desafios de ciências</strong><p>Propor atividades científicas educativas e seguras.</p></div>
-      <div class="proposal"><strong>17. Campanha de organização</strong><p>Incentivar o cuidado com os espaços escolares.</p></div>
-      <div class="proposal"><strong>18. Divulgação das olimpíadas</strong><p>Informar datas e formas de participação.</p></div>
-      <div class="proposal"><strong>19. Rodas de conversa</strong><p>Debater sugestões para melhorar a convivência.</p></div>
-      <div class="proposal"><strong>20. Caixa de sugestões digital</strong><p>Receber ideias para avaliação da equipe responsável.</p></div>
+    <section id="propostas">
+      <h2>As 20 propostas</h2>
+      <p>Conheça as ideias planejadas para a escola.</p>
+
+      <div class="propostas" id="listaPropostas"></div>
     </section>
 
-    <section>
-      <h2>Mande uma proposta</h2>
-      <p>Não informe endereço, telefone ou outros dados pessoais.</p>
-      <form id="proposalForm">
-        <label for="category">Categoria</label>
-        <select id="category" required>
-          <option value="">Selecione</option>
-          <option>Estudos</option>
-          <option>Esportes</option>
-          <option>Cultura</option>
-          <option>Tecnologia</option>
-          <option>Convivência</option>
-          <option>Outra ideia</option>
+    <section id="enviar">
+      <h2>📨 Mande uma proposta</h2>
+      <p>
+        Escreva uma ideia que possa melhorar a escola.
+        Não informe seu nome, telefone, endereço ou outros dados pessoais.
+      </p>
+
+      <form id="formProposta">
+        <label for="categoria">Categoria</label>
+        <select id="categoria" required>
+          <option value="">Selecione uma categoria</option>
+          <option value="Estudos">Estudos e aprendizagem</option>
+          <option value="Esportes">Esportes e competições</option>
+          <option value="Cultura">Cultura e lazer</option>
+          <option value="Profissões">Feira de profissões</option>
+          <option value="Convivência">Convivência escolar</option>
+          <option value="Estrutura">Estrutura da escola</option>
+          <option value="Outra">Outra ideia</option>
         </select>
 
-        <label for="title">Título da proposta</label>
-        <input id="title" maxlength="80" required placeholder="Ex.: Torneio de xadrez">
+        <label for="titulo">Título da proposta</label>
+        <input
+          id="titulo"
+          type="text"
+          maxlength="80"
+          required
+          placeholder="Ex.: Campeonato entre turmas"
+        >
 
-        <label for="description">Explique sua ideia</label>
-        <textarea id="description" maxlength="1500" required placeholder="Como a ideia poderia funcionar?"></textarea>
+        <label for="descricao">Explique sua ideia</label>
+        <textarea
+          id="descricao"
+          maxlength="1500"
+          required
+          placeholder="Como funcionaria? Quem poderia participar?"
+        ></textarea>
 
-        <button id="submitButton" type="submit">Enviar proposta</button>
-        <p id="status" role="status" aria-live="polite"></p>
+        <p class="aviso">
+          Envie apenas ideias respeitosas. A equipe responsável avaliará
+          as propostas conforme as regras e possibilidades da escola.
+        </p>
+
+        <button id="botaoEnviar" type="submit">
+          Enviar proposta
+        </button>
+
+        <div id="mensagem" role="status" aria-live="polite"></div>
       </form>
     </section>
   </main>
 
-  <footer>Atlético Estudantil · Ideias para construir juntos</footer>
+  <footer>
+    Atlético Estudantil • Participação estudantil
+  </footer>
 
   <script type="module">
     import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import {
-      getFirestore, collection, addDoc, serverTimestamp
-    } from
-      "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+      "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 
-    // Substitua pelos valores do seu firebaseConfig no Console Firebase.
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp
+    } from
+      "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+    // CONFIGURAÇÃO DO FIREBASE
+    // Troque apenas a apiKey pelo valor real do seu projeto.
     const firebaseConfig = {
-      apiKey: "COLE_SUA_API_KEY",
+      apiKey: "COLE_A_API_KEY_REAL_DO_FIREBASE",
       authDomain: "atletico-estudantil.firebaseapp.com",
       projectId: "atletico-estudantil",
-      storageBucket: "COLE_SEU_STORAGE_BUCKET",
-      messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID",
-      appId: "COLE_SEU_APP_ID"
+      storageBucket: "atletico-estudantil.firebasestorage.app",
+      messagingSenderId: "1059932469682",
+      appId: "1:1059932469682:web:dadf2643c3b250903fccab",
+      measurementId: "G-25XHNCC6H1"
     };
 
-    const form = document.getElementById("proposalForm");
-    const button = document.getElementById("submitButton");
-    const status = document.getElementById("status");
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    let db;
+    // Estas são sugestões iniciais para apresentar no site.
+    // Substitua pelos textos oficiais aprovados pelo grêmio.
+    const propostas = [
+      ["Feira de profissões", "Apresentar profissões e caminhos de formação."],
+      ["Campeonato entre turmas", "Organizar competições esportivas com regras claras."],
+      ["Clube de estudos", "Criar momentos de estudo colaborativo."],
+      ["Simulado escolar", "Promover atividades de preparação para avaliações."],
+      ["Reconhecimento acadêmico", "Valorizar dedicação e evolução nos estudos."],
+      ["Sessão de cinema", "Organizar exibições educativas com autorização da escola."],
+      ["Clube de leitura", "Incentivar leitura e troca de livros."],
+      ["Torneios de jogos", "Promover desafios recreativos autorizados."],
+      ["Mostra de talentos", "Dar espaço para talentos artísticos e culturais."],
+      ["Feira de ciências", "Expor experiências e projetos científicos."],
+      ["Oficinas de tecnologia", "Estimular programação e criação digital."],
+      ["Educação financeira", "Aprender sobre planejamento e consumo consciente."],
+      ["Campanha de reciclagem", "Incentivar o descarte correto de resíduos."],
+      ["Melhorias na convivência", "Estimular respeito e cooperação entre estudantes."],
+      ["Escuta dos alunos", "Reunir sugestões estudantis de forma organizada."],
+      ["Gincana solidária", "Realizar ações solidárias com apoio da escola."],
+      ["Exposição de fotografias", "Compartilhar trabalhos fotográficos autorizados."],
+      ["Oficinas de escrita", "Praticar produção de textos e comunicação."],
+      ["Desafios de matemática", "Promover atividades e desafios matemáticos."],
+      ["Calendário de atividades", "Divulgar eventos e projetos escolares aprovados."]
+    ];
 
-    try {
-      const app = initializeApp(firebaseConfig);
-      db = getFirestore(app);
-    } catch (error) {
-      console.error("Erro ao iniciar Firebase:", error);
+    const lista = document.getElementById("listaPropostas");
+
+    propostas.forEach(([titulo, descricao], indice) => {
+      const card = document.createElement("article");
+      card.className = "proposta";
+
+      const numero = document.createElement("h3");
+      numero.textContent = `${indice + 1}. ${titulo}`;
+
+      const texto = document.createElement("p");
+      texto.textContent = descricao;
+
+      card.append(numero, texto);
+      lista.appendChild(card);
+    });
+
+    const form = document.getElementById("formProposta");
+    const botao = document.getElementById("botaoEnviar");
+    const mensagem = document.getElementById("mensagem");
+
+    function mostrarMensagem(texto, tipo) {
+      mensagem.textContent = texto;
+      mensagem.className = tipo;
     }
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
+    form.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
 
-      if (!db || firebaseConfig.apiKey === "COLE_SUA_API_KEY") {
-        status.textContent =
-          "O site ainda precisa da configuração correta do Firebase.";
+      const categoria = document.getElementById("categoria").value;
+      const titulo = document.getElementById("titulo").value.trim();
+      const descricao = document.getElementById("descricao").value.trim();
+
+      if (!categoria || titulo.length < 3 || descricao.length < 10) {
+        mostrarMensagem(
+          "Confira os campos: o título precisa ter ao menos 3 caracteres e a descrição, 10.",
+          "erro"
+        );
         return;
       }
 
-      button.disabled = true;
-      status.textContent = "Enviando sua proposta...";
+      if (
+        firebaseConfig.apiKey === "COLE_A_API_KEY_REAL_DO_FIREBASE"
+      ) {
+        mostrarMensagem(
+          "A configuração do Firebase ainda não foi concluída.",
+          "erro"
+        );
+        return;
+      }
+
+      botao.disabled = true;
+      botao.textContent = "Enviando...";
+      mensagem.className = "";
+      mensagem.style.display = "none";
 
       try {
         await addDoc(collection(db, "propostas"), {
-          categoria: document.getElementById("category").value,
-          titulo: document.getElementById("title").value.trim(),
-          descricao: document.getElementById("description").value.trim(),
+          categoria,
+          titulo,
+          descricao,
           status: "pendente",
           criadaEm: serverTimestamp()
         });
 
         form.reset();
-        status.textContent =
-          "Proposta enviada com sucesso! Ela será analisada pela equipe responsável.";
-      } catch (error) {
-        console.error("Erro ao enviar proposta:", error);
-        status.textContent =
-          "Não foi possível enviar. Verifique a conexão e as regras do banco com o responsável pelo projeto.";
+        mostrarMensagem(
+          "Proposta enviada com sucesso! Ela será avaliada pela equipe responsável.",
+          "sucesso"
+        );
+      } catch (erro) {
+        console.error("Falha ao enviar proposta:", erro);
+        mostrarMensagem(
+          "Não foi possível enviar. A configuração ou as permissões do banco podem estar incompletas. Tente novamente mais tarde.",
+          "erro"
+        );
       } finally {
-        button.disabled = false;
+        botao.disabled = false;
+        botao.textContent = "Enviar proposta";
       }
     });
   </script>
