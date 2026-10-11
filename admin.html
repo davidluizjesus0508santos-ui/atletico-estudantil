@@ -3,76 +3,223 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ADM | Atlético Estudantil</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f0f4fa;
-      color: #17345c;
+      background: #f1f5f9;
+      color: #172033;
     }
     header {
-      background: #123a70;
+      background: #102b50;
       color: white;
-      padding: 25px;
+      padding: 24px 16px;
       text-align: center;
     }
-    main {
-      max-width: 850px;
-      margin: 25px auto;
-      padding: 16px;
-    }
-    .card {
+    main { max-width: 950px; margin: 25px auto; padding: 0 16px; }
+    section {
       background: white;
-      padding: 20px;
-      margin: 15px 0;
+      padding: 22px;
       border-radius: 12px;
-      box-shadow: 0 2px 8px #0001;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px #00000012;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font-size: 16px;
     }
     button {
-      background: #174a8b;
+      background: #1768bd;
       color: white;
       border: 0;
-      padding: 12px 18px;
-      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
     }
-    .aviso { color: #8a4b00; }
+    button.secondary { background: #475569; }
+    button:disabled { opacity: .6; }
+    .proposal {
+      border: 1px solid #dbe3ee;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 12px 0;
+      overflow-wrap: anywhere;
+    }
+    .muted { color: #64748b; }
+    #panel { display: none; }
+    #status { line-height: 1.5; }
   </style>
 </head>
 <body>
   <header>
-    <h1>ATLÉTICO ESTUDANTIL</h1>
+    <h1>Atlético Estudantil</h1>
     <p>Painel administrativo</p>
   </header>
 
   <main>
-    <div class="card">
-      <h2>📥 Caixa de propostas</h2>
-      <p>Bem-vindo ao painel do Grêmio!</p>
-      <p class="aviso">
-        Esta é uma versão inicial. As propostas dos alunos
-        ainda não estão conectadas a este painel.
-      </p>
-    </div>
+    <section id="login">
+      <h2>Entrar no ADM</h2>
+      <p>Use uma conta autorizada pela equipe responsável.</p>
+      <form id="loginForm">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="password">Senha</label>
+        <input id="password" type="password"
+          autocomplete="current-password" required>
+        <button id="loginButton" type="submit">Entrar</button>
+      </form>
+      <p id="loginStatus" role="status" aria-live="polite"></p>
+    </section>
 
-    <div class="card">
-      <h2>📋 Como funcionará</h2>
-      <ul>
-        <li>Receber propostas dos alunos.</li>
-        <li>Ler e analisar cada ideia.</li>
-        <li>Planejar como colocá-la em prática.</li>
-        <li>Atualizar o andamento da proposta.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>📢 Publicar proposta do Grêmio</h2>
-      <p>Em uma próxima etapa, você poderá publicar propostas para os alunos.</p>
-    </div>
-
-    <p><a href="index.html">← Voltar ao site dos alunos</a></p>
+    <section id="panel">
+      <h2>Propostas recebidas</h2>
+      <p class="muted">Área restrita aos administradores autorizados.</p>
+      <button id="refreshButton">Atualizar propostas</button>
+      <button id="logoutButton" class="secondary">Sair</button>
+      <p id="panelStatus" role="status" aria-live="polite"></p>
+      <div id="proposals"></div>
+    </section>
   </main>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+    } from
+      "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import {
+      getFirestore, collection, getDocs, query, orderBy
+    } from
+      "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+    // Use os valores reais do firebaseConfig do seu projeto.
+    const firebaseConfig = {
+      apiKey: "COLE_SUA_API_KEY",
+      authDomain: "atletico-estudantil.firebaseapp.com",
+      projectId: "atletico-estudantil",
+      storageBucket: "COLE_SEU_STORAGE_BUCKET",
+      messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID",
+      appId: "COLE_SEU_APP_ID"
+    };
+
+    const login = document.getElementById("login");
+    const panel = document.getElementById("panel");
+    const loginForm = document.getElementById("loginForm");
+    const loginStatus = document.getElementById("loginStatus");
+    const panelStatus = document.getElementById("panelStatus");
+    const proposals = document.getElementById("proposals");
+    const loginButton = document.getElementById("loginButton");
+
+    let auth;
+    let db;
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+    } catch (error) {
+      loginStatus.textContent = "Confira a configuração do Firebase.";
+    }
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!auth) return;
+
+      loginButton.disabled = true;
+      loginStatus.textContent = "Verificando acesso...";
+
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          document.getElementById("email").value.trim(),
+          document.getElementById("password").value
+        );
+        loginStatus.textContent = "";
+      } catch (error) {
+        loginStatus.textContent =
+          "Não foi possível entrar. Confira o e-mail e a senha.";
+      } finally {
+        loginButton.disabled = false;
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      login.style.display = user ? "none" : "block";
+      panel.style.display = "none";
+      proposals.replaceChildren();
+
+      if (!user) return;
+
+      // O login sozinho NÃO significa que a conta é administradora.
+      // As regras do Firestore precisam validar a autorização do usuário.
+      panel.style.display = "block";
+      panelStatus.textContent =
+        "Carregue as propostas. Se o acesso for negado, configure as regras seguras com o responsável.";
+    });
+
+    async function loadProposals() {
+      if (!auth.currentUser || !db) return;
+
+      proposals.replaceChildren();
+      panelStatus.textContent = "Carregando...";
+
+      try {
+        const q = query(
+          collection(db, "propostas"),
+          orderBy("criadaEm", "desc")
+        );
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          panelStatus.textContent = "Nenhuma proposta encontrada.";
+          return;
+        }
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const card = document.createElement("article");
+          card.className = "proposal";
+
+          const title = document.createElement("h3");
+          title.textContent = data.titulo || "Sem título";
+
+          const category = document.createElement("p");
+          category.textContent = "Categoria: " + (data.categoria || "Não informada");
+
+          const description = document.createElement("p");
+          description.textContent = data.descricao || "";
+
+          const state = document.createElement("p");
+          state.textContent = "Status: " + (data.status || "Pendente");
+
+          card.append(title, category, description, state);
+          proposals.appendChild(card);
+        });
+
+        panelStatus.textContent = "Propostas carregadas.";
+      } catch (error) {
+        console.error(error);
+        panelStatus.textContent =
+          "Acesso negado ou erro ao carregar. Verifique a configuração e as regras do Firestore.";
+      }
+    }
+
+    document.getElementById("refreshButton").addEventListener(
+      "click", loadProposals
+    );
+
+    document.getElementById("logoutButton").addEventListener(
+      "click", async () => {
+        await signOut(auth);
+      }
+    );
+  </script>
 </body>
 </html>
