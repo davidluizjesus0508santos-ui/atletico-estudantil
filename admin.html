@@ -4,221 +4,341 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ADM | Atlético Estudantil</title>
+  <title>Administração | Atlético Estudantil</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f1f5f9;
       color: #172033;
+      background: #f3f6fb;
     }
+
     header {
-      background: #102b50;
-      color: white;
-      padding: 24px 16px;
+      padding: 26px 16px;
       text-align: center;
-    }
-    main { max-width: 950px; margin: 25px auto; padding: 0 16px; }
-    section {
-      background: white;
-      padding: 22px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 12px #00000012;
-    }
-    input, button, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: 1px solid #cbd5e1;
-      border-radius: 7px;
-      font-size: 16px;
-    }
-    button {
-      background: #1768bd;
+      background: #123b73;
       color: white;
-      border: 0;
-      cursor: pointer;
+    }
+
+    main {
+      width: min(950px, calc(100% - 24px));
+      margin: 25px auto;
+    }
+
+    section {
+      padding: 22px;
+      margin-bottom: 20px;
+      border-radius: 14px;
+      background: white;
+      box-shadow: 0 3px 14px #152d5010;
+    }
+
+    h2 { color: #123b73; }
+
+    label {
+      display: block;
+      margin-top: 12px;
       font-weight: bold;
     }
-    button.secondary { background: #475569; }
-    button:disabled { opacity: .6; }
-    .proposal {
-      border: 1px solid #dbe3ee;
+
+    input, select {
+      width: 100%;
+      margin-top: 5px;
+      padding: 12px;
+      border: 1px solid #bdc8d8;
       border-radius: 8px;
-      padding: 15px;
-      margin: 12px 0;
+      font: inherit;
+    }
+
+    button {
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #123b73;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled { opacity: .6; }
+
+    .acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .cartao {
+      margin-top: 14px;
+      padding: 18px;
+      border: 1px solid #dce3ed;
+      border-radius: 12px;
       overflow-wrap: anywhere;
     }
-    .muted { color: #64748b; }
-    #panel { display: none; }
-    #status { line-height: 1.5; }
+
+    .cartao h3 { margin-top: 0; }
+
+    .status {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 20px;
+      background: #eaf2ff;
+      color: #123b73;
+      font-size: 13px;
+    }
+
+    #mensagem {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin-top: 12px;
+    }
+
+    .erro { color: #a11919; }
+    .sucesso { color: #146c43; }
+    .oculto { display: none !important; }
+
+    .aviso {
+      color: #4b5563;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Atlético Estudantil</h1>
-    <p>Painel administrativo</p>
+    <h1>🏆 Atlético Estudantil</h1>
+    <p>Painel de administração</p>
   </header>
 
   <main>
     <section id="login">
-      <h2>Entrar no ADM</h2>
-      <p>Use uma conta autorizada pela equipe responsável.</p>
-      <form id="loginForm">
+      <h2>Entrar</h2>
+      <p>Use sua conta autorizada pela equipe responsável.</p>
+
+      <form id="formLogin">
         <label for="email">E-mail</label>
         <input id="email" type="email" autocomplete="username" required>
-        <label for="password">Senha</label>
-        <input id="password" type="password"
+
+        <label for="senha">Senha</label>
+        <input id="senha" type="password"
           autocomplete="current-password" required>
-        <button id="loginButton" type="submit">Entrar</button>
+
+        <div class="acoes">
+          <button id="botaoLogin" type="submit">Entrar</button>
+        </div>
       </form>
-      <p id="loginStatus" role="status" aria-live="polite"></p>
+      <p class="aviso">
+        Somente contas autorizadas devem ter acesso às propostas.
+      </p>
     </section>
 
-    <section id="panel">
+    <section id="painel" class="oculto">
       <h2>Propostas recebidas</h2>
-      <p class="muted">Área restrita aos administradores autorizados.</p>
-      <button id="refreshButton">Atualizar propostas</button>
-      <button id="logoutButton" class="secondary">Sair</button>
-      <p id="panelStatus" role="status" aria-live="polite"></p>
-      <div id="proposals"></div>
+      <p id="usuarioAtual"></p>
+
+      <div class="acoes">
+        <button id="atualizar" type="button">Atualizar propostas</button>
+        <button id="sair" type="button">Sair</button>
+      </div>
+
+      <p class="aviso">
+        As propostas são confidenciais. Compartilhe o acesso apenas
+        com os responsáveis autorizados pela escola.
+      </p>
+
+      <div id="lista"></div>
+    </section>
+
+    <section>
+      <p id="mensagem" role="status" aria-live="polite"></p>
     </section>
   </main>
 
   <script type="module">
     import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import {
-      getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
-    } from
-      "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-    import {
-      getFirestore, collection, getDocs, query, orderBy
-    } from
-      "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+      "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 
-    // Use os valores reais do firebaseConfig do seu projeto.
-      const firebaseConfig = {      apiKey: "COLE_SUA_API_KEY",
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from
+      "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      orderBy,
+      doc,
+      updateDoc
+    } from
+      "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "COLE_A_API_KEY_REAL_DO_FIREBASE",
       authDomain: "atletico-estudantil.firebaseapp.com",
       projectId: "atletico-estudantil",
-      storageBucket: "COLE_SEU_STORAGE_BUCKET",
-      messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID",
-      appId: "COLE_SEU_APP_ID"
+      storageBucket: "atletico-estudantil.firebasestorage.app",
+      messagingSenderId: "1059932469682",
+      appId: "1:1059932469682:web:dadf2643c3b250903fccab",
+      measurementId: "G-25XHNCC6H1"
     };
 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
     const login = document.getElementById("login");
-    const panel = document.getElementById("panel");
-    const loginForm = document.getElementById("loginForm");
-    const loginStatus = document.getElementById("loginStatus");
-    const panelStatus = document.getElementById("panelStatus");
-    const proposals = document.getElementById("proposals");
-    const loginButton = document.getElementById("loginButton");
+    const painel = document.getElementById("painel");
+    const formLogin = document.getElementById("formLogin");
+    const botaoLogin = document.getElementById("botaoLogin");
+    const mensagem = document.getElementById("mensagem");
+    const lista = document.getElementById("lista");
 
-    let auth;
-    let db;
-
-    try {
-      const app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
-    } catch (error) {
-      loginStatus.textContent = "Confira a configuração do Firebase.";
+    function informar(texto, tipo = "") {
+      mensagem.textContent = texto;
+      mensagem.className = tipo;
     }
 
-    loginForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      if (!auth) return;
+    function textoSeguro(tag, texto) {
+      const elemento = document.createElement(tag);
+      elemento.textContent = texto || "";
+      return elemento;
+    }
 
-      loginButton.disabled = true;
-      loginStatus.textContent = "Verificando acesso...";
+    formLogin.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+
+      if (firebaseConfig.apiKey === "COLE_A_API_KEY_REAL_DO_FIREBASE") {
+        informar("Configure a apiKey real do Firebase nos dois arquivos.", "erro");
+        return;
+      }
+
+      botaoLogin.disabled = true;
+      informar("Entrando...");
 
       try {
         await signInWithEmailAndPassword(
           auth,
           document.getElementById("email").value.trim(),
-          document.getElementById("password").value
+          document.getElementById("senha").value
         );
-        loginStatus.textContent = "";
-      } catch (error) {
-        loginStatus.textContent =
-          "Não foi possível entrar. Confira o e-mail e a senha.";
+      } catch (erro) {
+        informar("Não foi possível entrar. Confira os dados e a configuração do Firebase.", "erro");
       } finally {
-        loginButton.disabled = false;
+        botaoLogin.disabled = false;
       }
     });
 
-    onAuthStateChanged(auth, async (user) => {
-      login.style.display = user ? "none" : "block";
-      panel.style.display = "none";
-      proposals.replaceChildren();
+    onAuthStateChanged(auth, async (usuario) => {
+      lista.replaceChildren();
 
-      if (!user) return;
+      if (!usuario) {
+        login.classList.remove("oculto");
+        painel.classList.add("oculto");
+        return;
+      }
 
-      // O login sozinho NÃO significa que a conta é administradora.
-      // As regras do Firestore precisam validar a autorização do usuário.
-      panel.style.display = "block";
-      panelStatus.textContent =
-        "Carregue as propostas. Se o acesso for negado, configure as regras seguras com o responsável.";
+      login.classList.add("oculto");
+      painel.classList.remove("oculto");
+      document.getElementById("usuarioAtual").textContent =
+        "Conta conectada: " + (usuario.email || "administrador");
+
+      await carregarPropostas();
     });
 
-    async function loadProposals() {
-      if (!auth.currentUser || !db) return;
-
-      proposals.replaceChildren();
-      panelStatus.textContent = "Carregando...";
+    async function carregarPropostas() {
+      lista.replaceChildren();
+      informar("Carregando propostas...");
 
       try {
-        const q = query(
+        const consulta = query(
           collection(db, "propostas"),
           orderBy("criadaEm", "desc")
         );
-        const snapshot = await getDocs(q);
+        const resultado = await getDocs(consulta);
 
-        if (snapshot.empty) {
-          panelStatus.textContent = "Nenhuma proposta encontrada.";
+        if (resultado.empty) {
+          informar("Nenhuma proposta encontrada.");
           return;
         }
 
-        snapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          const card = document.createElement("article");
-          card.className = "proposal";
+        resultado.forEach((registro) => {
+          const dados = registro.data();
+          const cartao = document.createElement("article");
+          cartao.className = "cartao";
 
-          const title = document.createElement("h3");
-          title.textContent = data.titulo || "Sem título";
+          cartao.append(
+            textoSeguro("h3", dados.titulo),
+            textoSeguro("p", "Categoria: " + (dados.categoria || "Não informada")),
+            textoSeguro("p", dados.descricao),
+            textoSeguro("p", "Status: " + (dados.status || "pendente"))
+          );
 
-          const category = document.createElement("p");
-          category.textContent = "Categoria: " + (data.categoria || "Não informada");
+          const seletor = document.createElement("select");
+          seletor.setAttribute("aria-label", "Alterar status da proposta");
+          [
+            ["pendente", "Pendente"],
+            ["em_analise", "Em análise"],
+            ["aprovada", "Aprovada"],
+            ["recusada", "Não aprovada"],
+            ["concluida", "Concluída"]
+          ].forEach(([valor, rotulo]) => {
+            const opcao = document.createElement("option");
+            opcao.value = valor;
+            opcao.textContent = rotulo;
+            seletor.append(opcao);
+          });
+          seletor.value = dados.status || "pendente";
 
-          const description = document.createElement("p");
-          description.textContent = data.descricao || "";
+          const salvar = document.createElement("button");
+          salvar.type = "button";
+          salvar.textContent = "Salvar status";
 
-          const state = document.createElement("p");
-          state.textContent = "Status: " + (data.status || "Pendente");
+          salvar.addEventListener("click", async () => {
+            salvar.disabled = true;
+            try {
+              await updateDoc(doc(db, "propostas", registro.id), {
+                status: seletor.value
+              });
+              informar("Status atualizado.", "sucesso");
+            } catch (erro) {
+              informar("Não foi possível alterar. Confira as permissões do Firestore.", "erro");
+            } finally {
+              salvar.disabled = false;
+            }
+          });
 
-          card.append(title, category, description, state);
-          proposals.appendChild(card);
+          const acoes = document.createElement("div");
+          acoes.className = "acoes";
+          acoes.append(seletor, salvar);
+          cartao.append(acoes);
+          lista.append(cartao);
         });
 
-        panelStatus.textContent = "Propostas carregadas.";
-      } catch (error) {
-        console.error(error);
-        panelStatus.textContent =
-          "Acesso negado ou erro ao carregar. Verifique a configuração e as regras do Firestore.";
+        informar("Propostas carregadas: " + resultado.size, "sucesso");
+      } catch (erro) {
+        console.error(erro);
+        informar(
+          "Não foi possível carregar as propostas. O acesso pode estar bloqueado pelas regras do Firestore.",
+          "erro"
+        );
       }
     }
 
-    document.getElementById("refreshButton").addEventListener(
-      "click", loadProposals
+    document.getElementById("atualizar").addEventListener(
+      "click", carregarPropostas
     );
 
-    document.getElementById("logoutButton").addEventListener(
-      "click", async () => {
-        await signOut(auth);
-      }
-    );
+    document.getElementById("sair").addEventListener("click", async () => {
+      await signOut(auth);
+      informar("Você saiu do painel.");
+    });
   </script>
 </body>
 </html>
