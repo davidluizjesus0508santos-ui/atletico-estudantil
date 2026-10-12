@@ -1,379 +1,76 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Atlético Estudantil</title>
   <style>
-    :root {
-      --azul: #123b73;
-      --azul-claro: #eaf2ff;
-      --fundo: #f4f7fb;
-      --texto: #172033;
-      --verde: #16784a;
-    }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: var(--fundo);
-      color: var(--texto);
-      line-height: 1.6;
+      background: #f1f5fb;
+      color: #172b4d;
     }
-
     header {
-      background: var(--azul);
+      background: linear-gradient(135deg, #10264b, #2457a7);
       color: white;
-      padding: 32px 18px;
+      padding: 35px 20px;
       text-align: center;
     }
-
-    header h1 {
-      margin: 0;
-      font-size: clamp(28px, 5vw, 42px);
-    }
-
-    header p { margin-bottom: 0; }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 14px;
-      background: white;
-      border-bottom: 1px solid #dce3ed;
-    }
-
+    header h1 { margin: 0 0 10px; font-size: 38px; }
+    nav { margin-top: 22px; }
     nav a {
-      color: var(--azul);
-      font-weight: bold;
-      text-decoration: none;
-      padding: 8px 12px;
-    }
-
-    main {
-      width: min(100% - 28px, 1000px);
-      margin: 28px auto;
-    }
-
-    section {
-      margin-bottom: 28px;
-      padding: 24px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 3px 14px #152d5010;
-    }
-
-    h2 { color: var(--azul); }
-
-    .propostas {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-    }
-
-    .proposta {
-      padding: 16px;
-      background: var(--azul-claro);
-      border-left: 4px solid var(--azul);
-      border-radius: 10px;
-    }
-
-    .proposta h3 {
-      margin: 0 0 8px;
-      color: var(--azul);
-      font-size: 17px;
-    }
-
-    form {
-      display: grid;
-      gap: 14px;
-    }
-
-    label { font-weight: bold; }
-
-    input, select, textarea {
-      display: block;
-      width: 100%;
-      margin-top: 5px;
-      padding: 12px;
-      border: 1px solid #b9c5d5;
-      border-radius: 8px;
-      font: inherit;
-    }
-
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-    }
-
-    button {
-      border: 0;
+      display: inline-block;
+      margin: 5px;
+      padding: 12px 18px;
       border-radius: 9px;
-      padding: 13px 18px;
-      background: var(--azul);
-      color: white;
-      font-size: 16px;
+      background: #ffc857;
+      color: #10264b;
+      text-decoration: none;
       font-weight: bold;
-      cursor: pointer;
     }
-
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
+    main { max-width: 950px; margin: 30px auto; padding: 0 16px; }
+    .card {
+      background: white;
+      padding: 25px;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px #10264b12;
     }
-
-    #mensagem {
-      padding: 12px;
-      border-radius: 8px;
-      display: none;
-    }
-
-    #mensagem.sucesso {
-      display: block;
-      color: #14532d;
-      background: #dcfce7;
-    }
-
-    #mensagem.erro {
-      display: block;
-      color: #991b1b;
-      background: #fee2e2;
-    }
-
-    .aviso {
-      color: #4b5563;
-      font-size: 14px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 24px;
-      color: #526078;
-    }
+    footer { text-align: center; padding: 25px; color: #64748b; }
   </style>
 </head>
-
 <body>
   <header>
-    <h1>🏆 Atlético Estudantil</h1>
-    <p>Ideias, participação e melhorias para nossa escola!</p>
+    <h1>Atlético Estudantil</h1>
+    <p>As ideias dos alunos podem transformar nossa escola.</p>
+    <nav>
+      <a href="alunos.html">Área dos alunos</a>
+      <a href="admin.html">Área administrativa</a>
+    </nav>
   </header>
 
-  <nav>
-    <a href="#inicio">Início</a>
-    <a href="#propostas">20 propostas</a>
-    <a href="#enviar">Mande uma proposta</a>
-  </nav>
-
   <main>
-    <section id="inicio">
-      <h2>Bem-vindo ao Atlético Estudantil!</h2>
-      <p>
-        Este é um espaço para conhecer as propostas do projeto e sugerir
-        melhorias para a vida escolar. A participação dos estudantes
-        ajuda a construir uma escola cada vez melhor.
-      </p>
+    <section class="card">
+      <h2>Bem-vindo!</h2>
+      <p>Este é o espaço de participação dos estudantes, com propostas para melhorar a escola.</p>
     </section>
 
-    <section id="propostas">
-      <h2>As 20 propostas</h2>
-      <p>Conheça as ideias planejadas para a escola.</p>
-
-      <div class="propostas" id="listaPropostas"></div>
+    <section class="card">
+      <h2>💡 Envie suas ideias</h2>
+      <p>Sugira atividades, projetos, eventos, melhorias nos estudos e iniciativas esportivas.</p>
+      <a href="alunos.html">Enviar uma proposta →</a>
     </section>
 
-    <section id="enviar">
-      <h2>📨 Mande uma proposta</h2>
-      <p>
-        Escreva uma ideia que possa melhorar a escola.
-        Não informe seu nome, telefone, endereço ou outros dados pessoais.
-      </p>
-
-      <form id="formProposta">
-        <label for="categoria">Categoria</label>
-        <select id="categoria" required>
-          <option value="">Selecione uma categoria</option>
-          <option value="Estudos">Estudos e aprendizagem</option>
-          <option value="Esportes">Esportes e competições</option>
-          <option value="Cultura">Cultura e lazer</option>
-          <option value="Profissões">Feira de profissões</option>
-          <option value="Convivência">Convivência escolar</option>
-          <option value="Estrutura">Estrutura da escola</option>
-          <option value="Outra">Outra ideia</option>
-        </select>
-
-        <label for="titulo">Título da proposta</label>
-        <input
-          id="titulo"
-          type="text"
-          maxlength="80"
-          required
-          placeholder="Ex.: Campeonato entre turmas"
-        >
-
-        <label for="descricao">Explique sua ideia</label>
-        <textarea
-          id="descricao"
-          maxlength="1500"
-          required
-          placeholder="Como funcionaria? Quem poderia participar?"
-        ></textarea>
-
-        <p class="aviso">
-          Envie apenas ideias respeitosas. A equipe responsável avaliará
-          as propostas conforme as regras e possibilidades da escola.
-        </p>
-
-        <button id="botaoEnviar" type="submit">
-          Enviar proposta
-        </button>
-
-        <div id="mensagem" role="status" aria-live="polite"></div>
-      </form>
+    <section class="card">
+      <h2>📣 Acompanhe as propostas</h2>
+      <p>Consulte as ideias aprovadas pela administração do grêmio.</p>
     </section>
   </main>
 
-  <footer>
-    Atlético Estudantil • Participação estudantil
-  </footer>
-
-  <script type="module">
-    import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      serverTimestamp
-    } from
-      "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
-
-    // CONFIGURAÇÃO DO FIREBASE
-    // Troque apenas a apiKey pelo valor real do seu projeto.
-    const firebaseConfig = {
-      apiKey: "apiKey",
-      authDomain: "atletico-estudantil.firebaseapp.com",
-      projectId: "atletico-estudantil",
-      storageBucket: "atletico-estudantil.firebasestorage.app",
-      messagingSenderId: "1059932469682",
-      appId: "1:1059932469682:web:dadf2643c3b250903fccab",
-      measurementId: "G-25XHNCC6H1"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Estas são sugestões iniciais para apresentar no site.
-    // Substitua pelos textos oficiais aprovados pelo grêmio.
-    const propostas = [
-      ["Feira de profissões", "Apresentar profissões e caminhos de formação."],
-      ["Campeonato entre turmas", "Organizar competições esportivas com regras claras."],
-      ["Clube de estudos", "Criar momentos de estudo colaborativo."],
-      ["Simulado escolar", "Promover atividades de preparação para avaliações."],
-      ["Reconhecimento acadêmico", "Valorizar dedicação e evolução nos estudos."],
-      ["Sessão de cinema", "Organizar exibições educativas com autorização da escola."],
-      ["Clube de leitura", "Incentivar leitura e troca de livros."],
-      ["Torneios de jogos", "Promover desafios recreativos autorizados."],
-      ["Mostra de talentos", "Dar espaço para talentos artísticos e culturais."],
-      ["Feira de ciências", "Expor experiências e projetos científicos."],
-      ["Oficinas de tecnologia", "Estimular programação e criação digital."],
-      ["Educação financeira", "Aprender sobre planejamento e consumo consciente."],
-      ["Campanha de reciclagem", "Incentivar o descarte correto de resíduos."],
-      ["Melhorias na convivência", "Estimular respeito e cooperação entre estudantes."],
-      ["Escuta dos alunos", "Reunir sugestões estudantis de forma organizada."],
-      ["Gincana solidária", "Realizar ações solidárias com apoio da escola."],
-      ["Exposição de fotografias", "Compartilhar trabalhos fotográficos autorizados."],
-      ["Oficinas de escrita", "Praticar produção de textos e comunicação."],
-      ["Desafios de matemática", "Promover atividades e desafios matemáticos."],
-      ["Calendário de atividades", "Divulgar eventos e projetos escolares aprovados."]
-    ];
-
-    const lista = document.getElementById("listaPropostas");
-
-    propostas.forEach(([titulo, descricao], indice) => {
-      const card = document.createElement("article");
-      card.className = "proposta";
-
-      const numero = document.createElement("h3");
-      numero.textContent = `${indice + 1}. ${titulo}`;
-
-      const texto = document.createElement("p");
-      texto.textContent = descricao;
-
-      card.append(numero, texto);
-      lista.appendChild(card);
-    });
-
-    const form = document.getElementById("formProposta");
-    const botao = document.getElementById("botaoEnviar");
-    const mensagem = document.getElementById("mensagem");
-
-    function mostrarMensagem(texto, tipo) {
-      mensagem.textContent = texto;
-      mensagem.className = tipo;
-    }
-
-    form.addEventListener("submit", async (evento) => {
-      evento.preventDefault();
-
-      const categoria = document.getElementById("categoria").value;
-      const titulo = document.getElementById("titulo").value.trim();
-      const descricao = document.getElementById("descricao").value.trim();
-
-      if (!categoria || titulo.length < 3 || descricao.length < 10) {
-        mostrarMensagem(
-          "Confira os campos: o título precisa ter ao menos 3 caracteres e a descrição, 10.",
-          "erro"
-        );
-        return;
-      }
-
-      if (
-        firebaseConfig.apiKey === "COLE_A_API_KEY_REAL_DO_FIREBASE"
-      ) {
-        mostrarMensagem(
-          "A configuração do Firebase ainda não foi concluída.",
-          "erro"
-        );
-        return;
-      }
-
-      botao.disabled = true;
-      botao.textContent = "Enviando...";
-      mensagem.className = "";
-      mensagem.style.display = "none";
-
-      try {
-        await addDoc(collection(db, "propostas"), {
-          categoria,
-          titulo,
-          descricao,
-          status: "pendente",
-          criadaEm: serverTimestamp()
-        });
-
-        form.reset();
-        mostrarMensagem(
-          "Proposta enviada com sucesso! Ela será avaliada pela equipe responsável.",
-          "sucesso"
-        );
-      } catch (erro) {
-        console.error("Falha ao enviar proposta:", erro);
-        mostrarMensagem(
-          "Não foi possível enviar. A configuração ou as permissões do banco podem estar incompletas. Tente novamente mais tarde.",
-          "erro"
-        );
-      } finally {
-        botao.disabled = false;
-        botao.textContent = "Enviar proposta";
-      }
-    });
-  </script>
+  <footer>Atlético Estudantil · Participação estudantil</footer>
 </body>
 </html>
+```
