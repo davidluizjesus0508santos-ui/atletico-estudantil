@@ -1,0 +1,143 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Área dos Alunos | Atlético Estudantil</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5fb;color:#172b4d}
+header{background:#10264b;color:white;padding:25px;text-align:center}
+main{max-width:800px;margin:25px auto;padding:0 15px}
+.card{background:white;padding:22px;margin-bottom:18px;border-radius:14px;box-shadow:0 5px 20px #10264b12}
+label{display:block;font-weight:bold;margin:12px 0 6px}
+input,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}
+textarea{min-height:110px}
+button{background:#2457a7;color:white;padding:12px 18px;border:0;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:12px}
+a{color:#2457a7}
+.msg{margin-top:12px;font-weight:bold}
+.proposta{border:1px solid #dce4ef;padding:14px;border-radius:10px;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>🎓 Área dos Alunos</h1>
+<p>Participe e ajude a melhorar nossa escola!</p>
+<a href="index.html" style="color:white">← Página inicial</a>
+</header>
+
+<main>
+<section class="card">
+<h2>💡 Enviar uma proposta</h2>
+<p>Explique sua ideia com respeito. A administração vai analisar sua sugestão.</p>
+<form id="form">
+<label for="titulo">Título da proposta</label>
+<input id="titulo" maxlength="200" required placeholder="Ex.: Feira de profissões">
+
+<label for="descricao">Descrição da ideia</label>
+<textarea id="descricao" maxlength="5000" required placeholder="Como essa ideia funcionaria na escola?"></textarea>
+
+<button type="submit" id="enviar">Enviar proposta</button>
+<div id="mensagem" class="msg"></div>
+</form>
+</section>
+
+<section class="card">
+<h2>📣 Propostas aprovadas</h2>
+<div id="lista">Carregando propostas...</div>
+</section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, serverTimestamp,
+  query, where, getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAm20hYu_9kWN8YwmkSPVoO5FVZwPRzysg",
+  authDomain: "atletico-estudantil.firebaseapp.com",
+  projectId: "atletico-estudantil",
+  storageBucket: "atletico-estudantil.firebasestorage.app",
+  messagingSenderId: "1059932469682",
+  appId: "1:1059932469682:web:dadf2643c3b250903fccab",
+  measurementId: "G-25XHNCC6H1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const titulo = document.getElementById("titulo").value.trim();
+  const descricao = document.getElementById("descricao").value.trim();
+  const mensagem = document.getElementById("mensagem");
+  const botao = document.getElementById("enviar");
+
+  if (!titulo || !descricao) return;
+
+  botao.disabled = true;
+  mensagem.textContent = "Enviando...";
+
+  try {
+    await addDoc(collection(db, "propostas"), {
+      titulo: titulo,
+      descricao: descricao,
+      status: "pendente",
+      createdAt: serverTimestamp()
+    });
+
+    document.getElementById("form").reset();
+    mensagem.textContent = "Proposta enviada para análise!";
+  } catch (erro) {
+    console.error(erro);
+    mensagem.textContent = "Erro ao enviar. Confira as regras do Firebase.";
+  } finally {
+    botao.disabled = false;
+  }
+});
+
+async function carregarAprovadas() {
+  const lista = document.getElementById("lista");
+
+  try {
+    const q = query(
+      collection(db, "propostas"),
+      where("status", "==", "aprovada")
+    );
+    const resultado = await getDocs(q);
+
+    lista.replaceChildren();
+
+    if (resultado.empty) {
+      lista.textContent = "Ainda não há propostas aprovadas.";
+      return;
+    }
+
+    resultado.forEach((item) => {
+      const dados = item.data();
+      const card = document.createElement("article");
+      card.className = "proposta";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = dados.titulo || "Proposta";
+
+      const descricao = document.createElement("p");
+      descricao.textContent = dados.descricao || "";
+
+      card.append(titulo, descricao);
+      lista.append(card);
+    });
+  } catch (erro) {
+    console.error(erro);
+    lista.textContent = "Não foi possível carregar as propostas.";
+  }
+}
+
+carregarAprovadas();
+</script>
+</body>
+</html>
+```
