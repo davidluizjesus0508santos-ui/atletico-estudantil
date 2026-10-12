@@ -3,99 +3,97 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel Administrativo | Atlético Estudantil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atlético Estudantil | Administração</title>
   <style>
     * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 24px;
-      font-family: Arial, sans-serif;
       background: #0b1220;
-      color: white;
+      color: #fff;
+      font-family: Arial, sans-serif;
     }
-    main {
-      max-width: 800px;
-      margin: 30px auto;
-    }
-    section, .proposta {
+    main { max-width: 760px; margin: 30px auto; }
+    section, article {
       background: #172238;
-      border: 1px solid #34435c;
-      border-radius: 12px;
       padding: 20px;
-      margin-bottom: 16px;
+      border-radius: 12px;
+      margin: 16px 0;
+      border: 1px solid #34435c;
     }
     input, button, select {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
       border-radius: 8px;
-      border: 1px solid #52627a;
       font-size: 16px;
     }
+    input, select {
+      color: #111;
+      background: #fff;
+      border: 1px solid #aaa;
+    }
     button {
-      background: #2563eb;
       color: white;
+      background: #2563eb;
       border: 0;
       cursor: pointer;
       font-weight: bold;
     }
-    button:disabled { opacity: .6; cursor: wait; }
-    .mensagem { overflow-wrap: anywhere; }
-    .erro { color: #ff9999; }
+    button:disabled { opacity: .6; }
+    .erro { color: #ff9c9c; overflow-wrap: anywhere; }
     .sucesso { color: #86efac; }
-    .muted { color: #c1ccdd; }
+    [hidden] { display: none !important; }
   </style>
 </head>
 <body>
 <main>
   <h1>🏆 Atlético Estudantil</h1>
-  <p class="muted">Painel administrativo</p>
+  <p>Painel administrativo</p>
 
   <section id="login">
     <h2>Entrar</h2>
     <form id="formLogin">
       <label for="email">E-mail</label>
       <input id="email" type="email" autocomplete="username"
-             placeholder="Seu e-mail" required>
+        placeholder="Digite seu e-mail" required>
 
       <label for="senha">Senha</label>
       <input id="senha" type="password"
-             autocomplete="current-password"
-             placeholder="Sua senha" required>
+        autocomplete="current-password"
+        placeholder="Digite sua senha" required>
 
-      <button id="botaoEntrar" type="submit">Entrar no painel</button>
+      <button id="entrar" type="submit">Entrar no painel</button>
     </form>
-    <p id="msgLogin" class="mensagem" role="status"></p>
+    <p id="msgLogin" role="status"></p>
   </section>
 
   <section id="painel" hidden>
     <h2>Propostas recebidas</h2>
-    <p id="usuarioLogado" class="muted"></p>
-    <button id="botaoAtualizar" type="button">Atualizar propostas</button>
-    <p id="msgPainel" class="mensagem" role="status"></p>
+    <p id="conta"></p>
+    <button id="atualizar" type="button">Atualizar propostas</button>
+    <p id="msgPainel" role="status"></p>
     <div id="lista"></div>
-    <button id="botaoSair" type="button">Sair</button>
+    <button id="sair" type="button">Sair</button>
   </section>
 </main>
 
 <script type="module">
 import { initializeApp } from
   "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
 import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
 import {
   getFirestore,
   collection,
   getDocs,
-  orderBy,
   query,
+  orderBy,
   doc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -113,56 +111,54 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const el = id => document.getElementById(id);
 
-const $ = id => document.getElementById(id);
-
-function informar(id, texto, tipo = "") {
-  $(id).textContent = texto;
-  $(id).className = "mensagem " + tipo;
+function mostrar(id, texto, tipo = "") {
+  el(id).textContent = texto;
+  el(id).className = tipo;
 }
 
-function mensagemErro(erro) {
-  return `${erro.code || "sem-código"}: ${erro.message || "Erro desconhecido"}`;
+function detalheErro(erro) {
+  return (erro.code || "erro-desconhecido") + ": " +
+    (erro.message || "Sem detalhes");
 }
 
-$("formLogin").addEventListener("submit", async evento => {
+el("formLogin").addEventListener("submit", async evento => {
   evento.preventDefault();
-  const botao = $("botaoEntrar");
-  botao.disabled = true;
-  informar("msgLogin", "Verificando login...");
+  el("entrar").disabled = true;
+  mostrar("msgLogin", "Verificando login...");
 
   try {
     await signInWithEmailAndPassword(
       auth,
-      $("email").value.trim(),
-      $("senha").value
+      el("email").value.trim(),
+      el("senha").value
     );
-    informar("msgLogin", "Login realizado!", "sucesso");
+    mostrar("msgLogin", "Login realizado!", "sucesso");
   } catch (erro) {
-    informar("msgLogin", "Falha no login: " + mensagemErro(erro), "erro");
+    mostrar("msgLogin", "Falha no login: " + detalheErro(erro), "erro");
+    console.error("Erro de login:", erro);
   } finally {
-    botao.disabled = false;
+    el("entrar").disabled = false;
   }
 });
 
-onAuthStateChanged(auth, async usuario => {
-  $("login").hidden = !!usuario;
-  $("painel").hidden = !usuario;
+onAuthStateChanged(auth, usuario => {
+  el("login").hidden = !!usuario;
+  el("painel").hidden = !usuario;
 
   if (usuario) {
-    $("usuarioLogado").textContent =
-      "Conectado como: " + usuario.email;
-    await carregarPropostas();
+    mostrar("conta", "Conectado: " + usuario.email);
+    carregarPropostas();
   } else {
-    $("lista").replaceChildren();
-    informar("msgLogin", "");
+    el("lista").replaceChildren();
   }
 });
 
 async function carregarPropostas() {
-  informar("msgPainel", "Carregando propostas...");
-  $("botaoAtualizar").disabled = true;
-  $("lista").replaceChildren();
+  el("atualizar").disabled = true;
+  el("lista").replaceChildren();
+  mostrar("msgPainel", "Carregando propostas...");
 
   try {
     const consulta = query(
@@ -172,17 +168,16 @@ async function carregarPropostas() {
     const resultado = await getDocs(consulta);
 
     if (resultado.empty) {
-      informar("msgPainel", "Nenhuma proposta encontrada.", "sucesso");
+      mostrar("msgPainel", "Nenhuma proposta encontrada.", "sucesso");
       return;
     }
 
-    informar("msgPainel", resultado.size + " proposta(s) encontrada(s).",
+    mostrar("msgPainel", resultado.size + " proposta(s) encontrada(s).",
       "sucesso");
 
-    resultado.forEach(item => {
-      const dados = item.data();
+    resultado.forEach(registro => {
+      const dados = registro.data();
       const caixa = document.createElement("article");
-      caixa.className = "proposta";
 
       const titulo = document.createElement("h3");
       titulo.textContent = dados.titulo || "Sem título";
@@ -194,14 +189,14 @@ async function carregarPropostas() {
       descricao.textContent = dados.descricao || "Sem descrição";
 
       const status = document.createElement("p");
-      status.textContent = "Status atual: " + (dados.status || "pendente");
+      status.textContent = "Status: " + (dados.status || "pendente");
 
       const seletor = document.createElement("select");
-      ["pendente", "em análise", "aprovada", "recusada"].forEach(opcao => {
-        const itemOpcao = document.createElement("option");
-        itemOpcao.value = opcao;
-        itemOpcao.textContent = opcao;
-        seletor.appendChild(itemOpcao);
+      ["pendente", "em análise", "aprovada", "recusada"].forEach(valor => {
+        const opcao = document.createElement("option");
+        opcao.value = valor;
+        opcao.textContent = valor;
+        seletor.appendChild(opcao);
       });
       seletor.value = dados.status || "pendente";
 
@@ -210,37 +205,37 @@ async function carregarPropostas() {
       salvar.addEventListener("click", async () => {
         salvar.disabled = true;
         try {
-          await updateDoc(doc(db, "propostas", item.id), {
+          await updateDoc(doc(db, "propostas", registro.id), {
             status: seletor.value
           });
-          status.textContent = "Status atual: " + seletor.value;
-          informar("msgPainel", "Status atualizado!", "sucesso");
+          status.textContent = "Status: " + seletor.value;
+          mostrar("msgPainel", "Status atualizado!", "sucesso");
         } catch (erro) {
-          informar("msgPainel", "Falha ao salvar: " + mensagemErro(erro), "erro");
+          mostrar("msgPainel", "Erro ao salvar: " + detalheErro(erro), "erro");
+          console.error("Erro ao salvar:", erro);
         } finally {
           salvar.disabled = false;
         }
       });
 
       caixa.append(titulo, categoria, descricao, status, seletor, salvar);
-      $("lista").appendChild(caixa);
+      el("lista").appendChild(caixa);
     });
   } catch (erro) {
-    informar("msgPainel",
-      "Não foi possível carregar as propostas: " + mensagemErro(erro),
-      "erro");
+    mostrar("msgPainel", "Erro ao carregar propostas: " + detalheErro(erro), "erro");
+    console.error("Erro ao carregar:", erro);
   } finally {
-    $("botaoAtualizar").disabled = false;
+    el("atualizar").disabled = false;
   }
 }
 
-$("botaoAtualizar").addEventListener("click", carregarPropostas);
+el("atualizar").addEventListener("click", carregarPropostas);
 
-$("botaoSair").addEventListener("click", async () => {
+el("sair").addEventListener("click", async () => {
   try {
     await signOut(auth);
   } catch (erro) {
-    informar("msgPainel", "Erro ao sair: " + mensagemErro(erro), "erro");
+    mostrar("msgPainel", "Erro ao sair: " + detalheErro(erro), "erro");
   }
 });
 </script>
