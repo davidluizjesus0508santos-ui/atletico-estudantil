@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Atlético Estudantil | Alunos</title>
+<title>Atlético Estudantil - Alunos</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#07111f;color:#f4f7ff;font-family:Arial,sans-serif;line-height:1.6}
@@ -55,10 +55,8 @@ footer{text-align:center;padding:25px;color:#9cacc2}
 <form id="form">
 <label for="titulo">Título da proposta</label>
 <input id="titulo" maxlength="200" required placeholder="Ex.: Mais atividades esportivas">
-
 <label for="descricao">Explique sua ideia</label>
 <textarea id="descricao" maxlength="5000" required placeholder="Como funcionaria sua proposta?"></textarea>
-
 <button id="enviar" type="submit">Enviar para análise</button>
 <p id="mensagem" class="mensagem" role="status"></p>
 </form>
@@ -102,8 +100,7 @@ propostas.forEach((p,i)=>{
   const artigo=document.createElement("article");
   artigo.className="proposta";
   const titulo=document.createElement("h3");
-  titulo.innerHTML='<span class="numero">'+(i+1)+'.</span> ';
-  titulo.append(document.createTextNode(p[0]));
+  titulo.textContent=(i+1)+". "+p[0];
   const texto=document.createElement("p");
   texto.textContent=p[1];
   artigo.append(titulo,texto);
@@ -113,7 +110,10 @@ propostas.forEach((p,i)=>{
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getFirestore,collection,addDoc,serverTimestamp,query,where,getDocs} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+ getFirestore,collection,addDoc,serverTimestamp,
+ query,where,getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig={
 apiKey:"AIzaSyAm20hYu_9kWN8YwmkSPVoO5FVZwPRzysg",
@@ -129,52 +129,54 @@ const db=getFirestore(initializeApp(firebaseConfig));
 const el=id=>document.getElementById(id);
 
 el("form").addEventListener("submit",async e=>{
-e.preventDefault();
-const titulo=el("titulo").value.trim();
-const descricao=el("descricao").value.trim();
-const botao=el("enviar");
-botao.disabled=true;
-el("mensagem").textContent="Enviando...";
-try{
-await addDoc(collection(db,"propostas"),{
-titulo,descricao,status:"pendente",createdAt:serverTimestamp()
-});
-el("form").reset();
-el("mensagem").textContent="Proposta enviada para análise!";
-}catch(err){
-console.error(err);
-el("mensagem").textContent="Não foi possível enviar. Verifique as regras do Firebase.";
-}finally{botao.disabled=false;}
+ e.preventDefault();
+ const titulo=el("titulo").value.trim();
+ const descricao=el("descricao").value.trim();
+ const botao=el("enviar");
+ botao.disabled=true;
+ el("mensagem").textContent="Enviando...";
+ try{
+  await addDoc(collection(db,"propostas"),{
+   titulo,descricao,status:"pendente",createdAt:serverTimestamp()
+  });
+  el("form").reset();
+  el("mensagem").textContent="Proposta enviada para análise!";
+ }catch(err){
+  console.error(err);
+  el("mensagem").textContent="Não foi possível enviar. Verifique as regras do Firebase.";
+ }finally{botao.disabled=false;}
 });
 
 async function carregarAprovadas(){
-const area=el("aprovadas");
-area.replaceChildren();
-const aviso=document.createElement("p");
-aviso.textContent="Carregando...";
-area.append(aviso);
-try{
-const resultado=await getDocs(query(collection(db,"propostas"),where("status","==","aprovada")));
-area.replaceChildren();
-if(resultado.empty){
-area.textContent="Ainda não há propostas aprovadas.";
-return;
-}
-resultado.forEach(doc=>{
-const p=doc.data();
-const artigo=document.createElement("article");
-artigo.className="proposta";
-const h=document.createElement("h3");
-h.textContent=p.titulo||"Proposta";
-const d=document.createElement("p");
-d.textContent=p.descricao||"";
-artigo.append(h,d);
-area.append(artigo);
-});
-}catch(err){
-console.error(err);
-area.textContent="Erro ao carregar propostas. Verifique as permissões do Firebase.";
-}
+ const area=el("aprovadas");
+ area.replaceChildren();
+ const aviso=document.createElement("p");
+ aviso.textContent="Carregando...";
+ area.append(aviso);
+ try{
+  const resultado=await getDocs(query(
+   collection(db,"propostas"),where("status","==","aprovada")
+  ));
+  area.replaceChildren();
+  if(resultado.empty){
+   area.textContent="Ainda não há propostas aprovadas.";
+   return;
+  }
+  resultado.forEach(doc=>{
+   const p=doc.data();
+   const artigo=document.createElement("article");
+   artigo.className="proposta";
+   const h=document.createElement("h3");
+   h.textContent=p.titulo||"Proposta";
+   const d=document.createElement("p");
+   d.textContent=p.descricao||"";
+   artigo.append(h,d);
+   area.append(artigo);
+  });
+ }catch(err){
+  console.error(err);
+  area.textContent="Erro ao carregar propostas. Verifique as permissões do Firebase.";
+ }
 }
 el("atualizar").addEventListener("click",carregarAprovadas);
 carregarAprovadas();
