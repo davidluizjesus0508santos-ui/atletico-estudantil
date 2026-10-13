@@ -1,48 +1,183 @@
 
-<section class="panel" id="propostas-gremio">
-  <h2>🏆 20 propostas do Atlético Estudantil</h2>
-  <p>Conheça nossas ideias para melhorar a escola!</p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlético Estudantil | Alunos</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#07111f;color:#f4f7ff;font-family:Arial,sans-serif;line-height:1.6}
+header{background:#0d1b30;padding:18px;border-bottom:1px solid #294263}
+nav{max-width:1000px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+a{color:#9dc2ff;text-decoration:none}
+main{max-width:1000px;margin:auto;padding:22px}
+.hero,.panel{background:#101f34;border:1px solid #294263;border-radius:18px;padding:22px;margin-bottom:20px}
+.hero{background:linear-gradient(135deg,#173968,#0d192b)}
+h1{font-size:clamp(30px,6vw,48px);line-height:1.15}
+h2{color:#a8caff}
+p{color:#c0ccdc}
+.proposta{background:#0a1728;border:1px solid #2b4261;border-radius:12px;padding:15px;margin:12px 0}
+.numero{color:#82b3ff;font-weight:bold}
+label{display:block;margin-top:12px;font-weight:bold}
+input,textarea{width:100%;padding:12px;border-radius:9px;border:1px solid #385170;background:#07111f;color:white;font:inherit}
+textarea{min-height:120px}
+button{background:#3978ed;color:white;border:0;border-radius:9px;padding:12px 16px;font-weight:bold;cursor:pointer;margin-top:14px}
+button:disabled{opacity:.6}
+.mensagem{margin-top:12px;color:#8debc9}
+footer{text-align:center;padding:25px;color:#9cacc2}
+</style>
+</head>
+<body>
+<header>
+<nav>
+<strong>🏆 ATLÉTICO ESTUDANTIL</strong>
+<div><a href="index.html">Início</a>　<a href="alunos.html">Alunos</a>　<a href="admin.html">ADM</a></div>
+</nav>
+</header>
 
-  <div id="lista-gremio"></div>
+<main>
+<section class="hero">
+<p>ÁREA DOS ALUNOS</p>
+<h1>Uma escola melhor começa com suas ideias.</h1>
+<p>Conheça nossas propostas e envie a sua também!</p>
+<a href="#minha-proposta">✍️ Mande sua proposta ↓</a>
 </section>
 
+<section class="panel">
+<h2>🏆 As 20 propostas do Atlético Estudantil</h2>
+<div id="listaGremio"></div>
+</section>
+
+<section class="panel" id="minha-proposta">
+<h2>💡 Mande uma proposta sua</h2>
+<p>Tem uma ideia para melhorar a escola? Escreva aqui para a direção analisar.</p>
+<form id="form">
+<label for="titulo">Título da proposta</label>
+<input id="titulo" maxlength="200" required placeholder="Ex.: Mais atividades esportivas">
+
+<label for="descricao">Explique sua ideia</label>
+<textarea id="descricao" maxlength="5000" required placeholder="Como funcionaria sua proposta?"></textarea>
+
+<button id="enviar" type="submit">Enviar para análise</button>
+<p id="mensagem" class="mensagem" role="status"></p>
+</form>
+</section>
+
+<section class="panel">
+<h2>✅ Propostas aprovadas</h2>
+<button id="atualizar" type="button">Atualizar propostas</button>
+<div id="aprovadas"><p>Carregando propostas...</p></div>
+</section>
+</main>
+
+<footer>Atlético Estudantil · Participação, respeito e ideias.</footer>
+
 <script>
-const propostasGremio = [
-  ["Feira de Profissões","Convidar profissionais para apresentar suas carreiras."],
-  ["Clube de Estudos","Criar grupos de estudo para ajudar os alunos."],
-  ["Desafio da Prova Paulista","Incentivar a aprendizagem e melhorar os resultados."],
-  ["Torneio Esportivo","Organizar competições entre as turmas."],
-  ["Escola Saudável","Promover limpeza e reciclagem na escola."],
-  ["Caixa de Sugestões","Receber ideias dos estudantes."],
-  ["Jornal do Grêmio","Divulgar notícias e projetos escolares."],
-  ["Clube de Leitura","Incentivar a leitura entre os alunos."],
-  ["Olimpíada de Conhecimentos","Realizar desafios de várias matérias."],
-  ["Dia das Profissões","Apresentar diferentes carreiras aos estudantes."],
-  ["Campeonato de Xadrez","Organizar partidas entre os alunos."],
-  ["Desafio de Redação","Incentivar a escrita e a criatividade."],
-  ["Clube de Tecnologia","Desenvolver projetos de programação e robótica."],
-  ["Feira de Ciências","Expor pesquisas e experiências dos estudantes."],
-  ["Campanha de Arrecadação","Promover ações solidárias com autorização da direção."],
-  ["Intervalo com Jogos","Oferecer jogos educativos em atividades autorizadas."],
-  ["Concurso de Fotografia","Expor fotos de temas escolhidos pelos estudantes."],
-  ["Mural de Oportunidades","Divulgar cursos e olimpíadas estudantis."],
-  ["Reconhecimento das Turmas","Valorizar colaboração, respeito e participação."],
-  ["Reunião Aberta do Grêmio","Ouvir ideias e sugestões dos estudantes."]
+const propostas = [
+["Feira de Profissões","Convidar profissionais para apresentar suas carreiras."],
+["Clube de Estudos","Criar grupos de estudo para ajudar os alunos nas matérias."],
+["Desafio da Prova Paulista","Promover desafios de aprendizagem para melhorar os resultados."],
+["Torneio Esportivo","Organizar competições esportivas entre as turmas."],
+["Escola Saudável","Realizar campanhas de limpeza e reciclagem na escola."],
+["Caixa de Sugestões","Receber ideias e opiniões dos estudantes."],
+["Jornal do Grêmio","Divulgar notícias, projetos e eventos escolares."],
+["Clube de Leitura","Promover encontros para conversar sobre livros."],
+["Olimpíada de Conhecimentos","Realizar desafios de Matemática, Português e outras matérias."],
+["Dia das Profissões","Apresentar diferentes carreiras e oportunidades."],
+["Campeonato de Xadrez","Organizar partidas de xadrez entre estudantes."],
+["Desafio de Redação","Incentivar a escrita e a criatividade."],
+["Clube de Tecnologia","Desenvolver projetos de programação e robótica."],
+["Feira de Ciências","Expor pesquisas e projetos científicos dos alunos."],
+["Campanha de Arrecadação","Organizar ações solidárias com autorização da direção."],
+["Intervalo com Jogos","Oferecer jogos educativos em atividades autorizadas."],
+["Concurso de Fotografia","Expor fotografias sobre temas escolhidos pelos estudantes."],
+["Mural de Oportunidades","Divulgar cursos, concursos e olimpíadas estudantis."],
+["Reconhecimento das Turmas","Valorizar colaboração, respeito e participação."],
+["Reunião Aberta do Grêmio","Ouvir sugestões dos estudantes periodicamente."]
 ];
 
-const listaGremio = document.getElementById("lista-gremio");
-
-propostasGremio.forEach((proposta, i) => {
-  const item = document.createElement("article");
-  item.className = "proposal";
-
-  const titulo = document.createElement("h3");
-  titulo.textContent = `${i + 1}. ${proposta[0]}`;
-
-  const descricao = document.createElement("p");
-  descricao.textContent = proposta[1];
-
-  item.append(titulo, descricao);
-  listaGremio.append(item);
+const lista = document.getElementById("listaGremio");
+propostas.forEach((p,i)=>{
+  const artigo=document.createElement("article");
+  artigo.className="proposta";
+  const titulo=document.createElement("h3");
+  titulo.innerHTML='<span class="numero">'+(i+1)+'.</span> ';
+  titulo.append(document.createTextNode(p[0]));
+  const texto=document.createElement("p");
+  texto.textContent=p[1];
+  artigo.append(titulo,texto);
+  lista.append(artigo);
 });
 </script>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getFirestore,collection,addDoc,serverTimestamp,query,where,getDocs} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyAm20hYu_9kWN8YwmkSPVoO5FVZwPRzysg",
+authDomain:"atletico-estudantil.firebaseapp.com",
+projectId:"atletico-estudantil",
+storageBucket:"atletico-estudantil.firebasestorage.app",
+messagingSenderId:"1059932469682",
+appId:"1:1059932469682:web:dadf2643c3b250903fccab",
+measurementId:"G-25XHNCC6H1"
+};
+
+const db=getFirestore(initializeApp(firebaseConfig));
+const el=id=>document.getElementById(id);
+
+el("form").addEventListener("submit",async e=>{
+e.preventDefault();
+const titulo=el("titulo").value.trim();
+const descricao=el("descricao").value.trim();
+const botao=el("enviar");
+botao.disabled=true;
+el("mensagem").textContent="Enviando...";
+try{
+await addDoc(collection(db,"propostas"),{
+titulo,descricao,status:"pendente",createdAt:serverTimestamp()
+});
+el("form").reset();
+el("mensagem").textContent="Proposta enviada para análise!";
+}catch(err){
+console.error(err);
+el("mensagem").textContent="Não foi possível enviar. Verifique as regras do Firebase.";
+}finally{botao.disabled=false;}
+});
+
+async function carregarAprovadas(){
+const area=el("aprovadas");
+area.replaceChildren();
+const aviso=document.createElement("p");
+aviso.textContent="Carregando...";
+area.append(aviso);
+try{
+const resultado=await getDocs(query(collection(db,"propostas"),where("status","==","aprovada")));
+area.replaceChildren();
+if(resultado.empty){
+area.textContent="Ainda não há propostas aprovadas.";
+return;
+}
+resultado.forEach(doc=>{
+const p=doc.data();
+const artigo=document.createElement("article");
+artigo.className="proposta";
+const h=document.createElement("h3");
+h.textContent=p.titulo||"Proposta";
+const d=document.createElement("p");
+d.textContent=p.descricao||"";
+artigo.append(h,d);
+area.append(artigo);
+});
+}catch(err){
+console.error(err);
+area.textContent="Erro ao carregar propostas. Verifique as permissões do Firebase.";
+}
+}
+el("atualizar").addEventListener("click",carregarAprovadas);
+carregarAprovadas();
+</script>
+</body>
+</html>
