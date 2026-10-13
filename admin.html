@@ -2,242 +2,267 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Atlético Estudantil | Administração</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      background: #0b1220;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-    main { max-width: 760px; margin: 30px auto; }
-    section, article {
-      background: #172238;
-      padding: 20px;
-      border-radius: 12px;
-      margin: 16px 0;
-      border: 1px solid #34435c;
-    }
-    input, button, select {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    input, select {
-      color: #111;
-      background: #fff;
-      border: 1px solid #aaa;
-    }
-    button {
-      color: white;
-      background: #2563eb;
-      border: 0;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:disabled { opacity: .6; }
-    .erro { color: #ff9c9c; overflow-wrap: anywhere; }
-    .sucesso { color: #86efac; }
-    [hidden] { display: none !important; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADM | Atlético Estudantil</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#07111f;color:#f4f7ff;font-family:Arial,sans-serif;line-height:1.6}
+header{background:#0d1b30;padding:18px;border-bottom:1px solid #294263}
+nav{max-width:1100px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+a{color:#9dc2ff;text-decoration:none}
+main{max-width:1100px;margin:auto;padding:22px}
+.panel{background:#101f34;border:1px solid #294263;border-radius:16px;padding:22px;margin-bottom:20px}
+h1,h2{line-height:1.2}
+h2{color:#a8caff}
+p{color:#c0ccdc}
+label{display:block;margin-top:12px;font-weight:bold}
+input,select{width:100%;padding:12px;border-radius:9px;border:1px solid #385170;background:#07111f;color:white;font:inherit}
+button{background:#3978ed;color:white;border:0;border-radius:9px;padding:10px 14px;font-weight:bold;cursor:pointer;margin:4px}
+button:disabled{opacity:.6}
+.btn-secondary{background:#253b58}
+.btn-green{background:#16835d}
+.btn-red{background:#b93849}
+.card{background:#0a1728;border:1px solid #2b4261;border-radius:12px;padding:16px;margin:12px 0}
+.badge{display:inline-block;border-radius:20px;padding:4px 10px;background:#263b59;color:#d9e7ff;font-size:13px}
+.status{color:#8debc9}
+.error{color:#ff9ba3}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.metric{background:#0a1728;border:1px solid #294263;padding:15px;border-radius:12px}
+.metric strong{font-size:26px;display:block}
+.hidden{display:none}
+.muted{color:#aabbd1}
+footer{text-align:center;padding:25px;color:#9cacc2}
+</style>
 </head>
 <body>
+<header>
+<nav>
+<strong>🏆 ATLÉTICO ESTUDANTIL · ADM</strong>
+<div><a href="index.html">Início</a>　<a href="alunos.html">Área dos alunos</a></div>
+</nav>
+</header>
+
 <main>
-  <h1>🏆 Atlético Estudantil</h1>
-  <p>Painel administrativo</p>
+<section class="panel" id="loginPanel">
+<h1>🔐 Acesso da direção</h1>
+<p>Entre com a conta autorizada para administrar as propostas.</p>
+<form id="loginForm">
+<label for="email">E-mail</label>
+<input id="email" type="email" required autocomplete="username">
+<label for="senha">Senha</label>
+<input id="senha" type="password" required autocomplete="current-password">
+<button id="loginBtn" type="submit">Entrar</button>
+<p id="loginMsg" role="status"></p>
+</form>
+</section>
 
-  <section id="login">
-    <h2>Entrar</h2>
-    <form id="formLogin">
-      <label for="email">E-mail</label>
-      <input id="email" type="email" autocomplete="username"
-        placeholder="Digite seu e-mail" required>
+<section id="dashboard" class="hidden">
+<div class="panel">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+<div>
+<h1>📋 Painel de propostas</h1>
+<p>Analise as ideias enviadas pelos alunos.</p>
+</div>
+<button id="sair" class="btn-secondary">Sair</button>
+</div>
+<div class="row">
+<div class="metric">Todas<strong id="total">0</strong></div>
+<div class="metric">Pendentes<strong id="pendentes">0</strong></div>
+<div class="metric">Aprovadas<strong id="aprovadas">0</strong></div>
+<div class="metric">Rejeitadas<strong id="rejeitadas">0</strong></div>
+</div>
+</div>
 
-      <label for="senha">Senha</label>
-      <input id="senha" type="password"
-        autocomplete="current-password"
-        placeholder="Digite sua senha" required>
-
-      <button id="entrar" type="submit">Entrar no painel</button>
-    </form>
-    <p id="msgLogin" role="status"></p>
-  </section>
-
-  <section id="painel" hidden>
-    <h2>Propostas recebidas</h2>
-    <p id="conta"></p>
-    <button id="atualizar" type="button">Atualizar propostas</button>
-    <p id="msgPainel" role="status"></p>
-    <div id="lista"></div>
-    <button id="sair" type="button">Sair</button>
-  </section>
+<div class="panel">
+<h2>🔎 Encontrar propostas</h2>
+<label for="busca">Pesquisar pelo título ou descrição</label>
+<input id="busca" placeholder="Digite uma palavra...">
+<label for="filtro">Filtrar por situação</label>
+<select id="filtro">
+<option value="todas">Todas</option>
+<option value="pendente">Pendentes</option>
+<option value="aprovada">Aprovadas</option>
+<option value="rejeitada">Rejeitadas</option>
+</select>
+<button id="atualizar">Atualizar lista</button>
+<p id="listaMsg" role="status"></p>
+<div id="lista"></div>
+</div>
+</section>
 </main>
 
+<footer>Atlético Estudantil · Administração</footer>
+
 <script type="module">
-import { initializeApp } from
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
+ getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  doc,
-  updateDoc
+ getFirestore,collection,getDocs,doc,updateDoc,query,orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAm20hYu_9kWN8YwmkSPVoO5FVZwPRzysg",
-  authDomain: "atletico-estudantil.firebaseapp.com",
-  projectId: "atletico-estudantil",
-  storageBucket: "atletico-estudantil.firebasestorage.app",
-  messagingSenderId: "1059932469682",
-  appId: "1:1059932469682:web:dadf2643c3b250903fccab",
-  measurementId: "G-25XHNCC6H1"
+const firebaseConfig={
+ apiKey:"AIzaSyAm20hYu_9kWN8YwmkSPVoO5FVZwPRzysg",
+ authDomain:"atletico-estudantil.firebaseapp.com",
+ projectId:"atletico-estudantil",
+ storageBucket:"atletico-estudantil.firebasestorage.app",
+ messagingSenderId:"1059932469682",
+ appId:"1:1059932469682:web:dadf2643c3b250903fccab",
+ measurementId:"G-25XHNCC6H1"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const el = id => document.getElementById(id);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-function mostrar(id, texto, tipo = "") {
-  el(id).textContent = texto;
-  el(id).className = tipo;
+const admins=[
+ "waaxi2qqtrZuLEM1EzQjEJA2T3D3",
+ "f93PUD9Fo3Va6OOmF2TX9wunSXp1"
+];
+
+const el=id=>document.getElementById(id);
+let propostas=[];
+
+function mostrarLogin(mensagem=""){
+ el("loginPanel").classList.remove("hidden");
+ el("dashboard").classList.add("hidden");
+ el("loginMsg").textContent=mensagem;
 }
 
-function detalheErro(erro) {
-  return (erro.code || "erro-desconhecido") + ": " +
-    (erro.message || "Sem detalhes");
+function mostrarPainel(){
+ el("loginPanel").classList.add("hidden");
+ el("dashboard").classList.remove("hidden");
 }
 
-el("formLogin").addEventListener("submit", async evento => {
-  evento.preventDefault();
-  el("entrar").disabled = true;
-  mostrar("msgLogin", "Verificando login...");
-
-  try {
-    await signInWithEmailAndPassword(
-      auth,
-      el("email").value.trim(),
-      el("senha").value
-    );
-    mostrar("msgLogin", "Login realizado!", "sucesso");
-  } catch (erro) {
-    mostrar("msgLogin", "Falha no login: " + detalheErro(erro), "erro");
-    console.error("Erro de login:", erro);
-  } finally {
-    el("entrar").disabled = false;
-  }
+el("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ el("loginBtn").disabled=true;
+ el("loginMsg").textContent="Entrando...";
+ try{
+  await signInWithEmailAndPassword(auth,el("email").value.trim(),el("senha").value);
+ }catch(err){
+  console.error(err);
+  mostrarLogin("Não foi possível entrar. Confira o e-mail e a senha.");
+ }finally{
+  el("loginBtn").disabled=false;
+ }
 });
 
-onAuthStateChanged(auth, usuario => {
-  el("login").hidden = !!usuario;
-  el("painel").hidden = !usuario;
-
-  if (usuario) {
-    mostrar("conta", "Conectado: " + usuario.email);
-    carregarPropostas();
-  } else {
-    el("lista").replaceChildren();
-  }
+onAuthStateChanged(auth,async user=>{
+ if(!user){
+  mostrarLogin();
+  return;
+ }
+ if(!admins.includes(user.uid)){
+  await signOut(auth);
+  mostrarLogin("Esta conta não tem permissão de administrador.");
+  return;
+ }
+ mostrarPainel();
+ await carregar();
 });
 
-async function carregarPropostas() {
-  el("atualizar").disabled = true;
-  el("lista").replaceChildren();
-  mostrar("msgPainel", "Carregando propostas...");
+el("sair").addEventListener("click",()=>signOut(auth));
+el("atualizar").addEventListener("click",carregar);
+el("busca").addEventListener("input",renderizar);
+el("filtro").addEventListener("change",renderizar);
 
-  try {
-    const consulta = query(
-      collection(db, "propostas"),
-      orderBy("criadaEm", "desc")
-    );
-    const resultado = await getDocs(consulta);
-
-    if (resultado.empty) {
-      mostrar("msgPainel", "Nenhuma proposta encontrada.", "sucesso");
-      return;
-    }
-
-    mostrar("msgPainel", resultado.size + " proposta(s) encontrada(s).",
-      "sucesso");
-
-    resultado.forEach(registro => {
-      const dados = registro.data();
-      const caixa = document.createElement("article");
-
-      const titulo = document.createElement("h3");
-      titulo.textContent = dados.titulo || "Sem título";
-
-      const categoria = document.createElement("p");
-      categoria.textContent = "Categoria: " + (dados.categoria || "Não informada");
-
-      const descricao = document.createElement("p");
-      descricao.textContent = dados.descricao || "Sem descrição";
-
-      const status = document.createElement("p");
-      status.textContent = "Status: " + (dados.status || "pendente");
-
-      const seletor = document.createElement("select");
-      ["pendente", "em análise", "aprovada", "recusada"].forEach(valor => {
-        const opcao = document.createElement("option");
-        opcao.value = valor;
-        opcao.textContent = valor;
-        seletor.appendChild(opcao);
-      });
-      seletor.value = dados.status || "pendente";
-
-      const salvar = document.createElement("button");
-      salvar.textContent = "Salvar status";
-      salvar.addEventListener("click", async () => {
-        salvar.disabled = true;
-        try {
-          await updateDoc(doc(db, "propostas", registro.id), {
-            status: seletor.value
-          });
-          status.textContent = "Status: " + seletor.value;
-          mostrar("msgPainel", "Status atualizado!", "sucesso");
-        } catch (erro) {
-          mostrar("msgPainel", "Erro ao salvar: " + detalheErro(erro), "erro");
-          console.error("Erro ao salvar:", erro);
-        } finally {
-          salvar.disabled = false;
-        }
-      });
-
-      caixa.append(titulo, categoria, descricao, status, seletor, salvar);
-      el("lista").appendChild(caixa);
-    });
-  } catch (erro) {
-    mostrar("msgPainel", "Erro ao carregar propostas: " + detalheErro(erro), "erro");
-    console.error("Erro ao carregar:", erro);
-  } finally {
-    el("atualizar").disabled = false;
-  }
+async function carregar(){
+ el("listaMsg").textContent="Carregando propostas...";
+ try{
+  const snap=await getDocs(query(collection(db,"propostas"),orderBy("createdAt","desc")));
+  propostas=snap.docs.map(d=>({id:d.id,...d.data()}));
+  el("listaMsg").textContent="";
+  renderizar();
+ }catch(err){
+  console.error(err);
+  el("listaMsg").textContent="Erro ao carregar. Verifique as regras do Firestore e o acesso desta conta.";
+  el("listaMsg").className="error";
+ }
 }
 
-el("atualizar").addEventListener("click", carregarPropostas);
+function renderizar(){
+ const lista=el("lista");
+ lista.replaceChildren();
 
-el("sair").addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-  } catch (erro) {
-    mostrar("msgPainel", "Erro ao sair: " + detalheErro(erro), "erro");
-  }
-});
+ const contagem={
+  total:propostas.length,
+  pendente:0,
+  aprovada:0,
+  rejeitada:0
+ };
+ propostas.forEach(p=>{
+  if(contagem[p.status]!==undefined)contagem[p.status]++;
+ });
+ el("total").textContent=contagem.total;
+ el("pendentes").textContent=contagem.pendente;
+ el("aprovadas").textContent=contagem.aprovada;
+ el("rejeitadas").textContent=contagem.rejeitada;
+
+ const termo=el("busca").value.trim().toLowerCase();
+ const filtro=el("filtro").value;
+ const filtradas=propostas.filter(p=>{
+  const texto=((p.titulo||"")+" "+(p.descricao||"")).toLowerCase();
+  return texto.includes(termo)&&(filtro==="todas"||p.status===filtro);
+ });
+
+ if(!filtradas.length){
+  lista.textContent="Nenhuma proposta encontrada.";
+  return;
+ }
+
+ filtradas.forEach(p=>{
+  const card=document.createElement("article");
+  card.className="card";
+
+  const titulo=document.createElement("h3");
+  titulo.textContent=p.titulo||"Proposta sem título";
+
+  const descricao=document.createElement("p");
+  descricao.textContent=p.descricao||"Sem descrição.";
+
+  const status=document.createElement("span");
+  status.className="badge";
+  status.textContent="Situação: "+(p.status||"pendente");
+
+  card.append(titulo,descricao,status);
+
+  const acoes=document.createElement("div");
+  const aprovar=document.createElement("button");
+  aprovar.className="btn-green";
+  aprovar.textContent="Aprovar";
+  aprovar.addEventListener("click",()=>mudarStatus(p.id,"aprovada"));
+
+  const pendente=document.createElement("button");
+  pendente.className="btn-secondary";
+  pendente.textContent="Deixar pendente";
+  pendente.addEventListener("click",()=>mudarStatus(p.id,"pendente"));
+
+  const rejeitar=document.createElement("button");
+  rejeitar.className="btn-red";
+  rejeitar.textContent="Rejeitar";
+  rejeitar.addEventListener("click",()=>mudarStatus(p.id,"rejeitada"));
+
+  acoes.append(aprovar,pendente,rejeitar);
+  card.append(acoes);
+  lista.append(card);
+ });
+}
+
+async function mudarStatus(id,status){
+ try{
+  await updateDoc(doc(db,"propostas",id),{status});
+  el("listaMsg").className="status";
+  el("listaMsg").textContent="Situação atualizada!";
+  await carregar();
+ }catch(err){
+  console.error(err);
+  el("listaMsg").className="error";
+  el("listaMsg").textContent="Não foi possível atualizar. Confira as permissões do Firestore.";
+ }
+}
 </script>
 </body>
 </html>
