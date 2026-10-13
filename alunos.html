@@ -1,268 +1,48 @@
 
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Área dos alunos | Atlético Estudantil</title>
-<style>
-:root {
-  --bg: #07111f;
-  --panel: #101e32;
-  --line: #263b59;
-  --text: #f3f7ff;
-  --muted: #a9b8ce;
-  --blue: #4f8cff;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(ellipse at top right, #142e52, transparent 40%), var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-}
-a { color: #9bc0ff; text-decoration: none; }
-header {
-  background: #07111f;
-  border-bottom: 1px solid #263b59;
-}
-.nav {
-  max-width: 1100px;
-  margin: auto;
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-.brand { color: white; font-weight: bold; }
-nav { display: flex; gap: 10px; flex-wrap: wrap; }
-nav a, .btn {
-  display: inline-block;
-  padding: 10px 15px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #ffffff08;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-.btn.primary {
-  background: linear-gradient(135deg, #4f8cff, #285dd4);
-  border: 0;
-}
-main { max-width: 1100px; margin: auto; padding: 30px 20px 60px; }
-.hero {
-  padding: 45px;
-  border: 1px solid #6d9fff36;
-  border-radius: 26px;
-  background: linear-gradient(125deg, #102747, #0d1a2c 70%, #142d50);
-}
-.eyebrow { color: #b8d2ff; font-weight: bold; }
-h1 { font-size: clamp(2.3rem, 6vw, 4rem); line-height: 1.1; }
-h2 { line-height: 1.2; }
-p, .muted { color: var(--muted); }
-.section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
-.panel {
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 22px;
-  background: linear-gradient(145deg, #12223a, #0d192a);
-  margin-top: 18px;
-}
-label { display: block; font-weight: bold; margin: 12px 0 6px; }
-input, textarea {
-  width: 100%;
-  padding: 13px;
-  background: #091525;
-  color: white;
-  border: 1px solid #314865;
-  border-radius: 11px;
-  font: inherit;
-}
-textarea { min-height: 140px; resize: vertical; }
-.proposal {
-  padding: 16px;
-  border: 1px solid var(--line);
-  background: #ffffff05;
-  border-radius: 14px;
-  margin-top: 12px;
-}
-.status { color: var(--muted); }
-.success { color: #8debc9; }
-.error { color: #ff9ba3; }
-.empty {
-  padding: 20px;
-  border: 1px dashed #3a5272;
-  border-radius: 14px;
-  color: var(--muted);
-  text-align: center;
-}
-footer {
-  text-align: center;
-  padding: 24px;
-  color: #91a4be;
-  border-top: 1px solid #ffffff12;
-}
-@media(max-width:700px) {
-  .nav { align-items: flex-start; }
-  main { padding: 20px 14px 45px; }
-  .hero, .panel { padding: 18px; }
-}
-</style>
-</head>
-<body>
-<header>
-  <div class="nav">
-    <a class="brand" href="index.html">🏆 ATLÉTICO ESTUDANTIL</a>
-    <nav>
-      <a href="index.html">Início</a>
-      <a href="alunos.html">Alunos</a>
-      <a href="admin.html">Direção / ADM</a>
-    </nav>
-  </div>
-</header>
+<section class="panel" id="propostas-gremio">
+  <h2>🏆 20 propostas do Atlético Estudantil</h2>
+  <p>Conheça nossas ideias para melhorar a escola!</p>
 
-<main>
-  <section class="hero">
-    <span class="eyebrow">🎓 ÁREA DOS ALUNOS</span>
-    <h1>Sua ideia tem<br><span style="color:#8bb7ff">espaço aqui.</span></h1>
-    <p>Conte como podemos melhorar a escola. Explique sua ideia com clareza e respeito.</p>
-    <a class="btn primary" href="#enviar">Enviar proposta ↓</a>
-  </section>
+  <div id="lista-gremio"></div>
+</section>
 
-  <div class="section" id="enviar">
-    <h2>💡 Enviar uma proposta</h2>
-    <span>Vai para análise</span>
-  </div>
+<script>
+const propostasGremio = [
+  ["Feira de Profissões","Convidar profissionais para apresentar suas carreiras."],
+  ["Clube de Estudos","Criar grupos de estudo para ajudar os alunos."],
+  ["Desafio da Prova Paulista","Incentivar a aprendizagem e melhorar os resultados."],
+  ["Torneio Esportivo","Organizar competições entre as turmas."],
+  ["Escola Saudável","Promover limpeza e reciclagem na escola."],
+  ["Caixa de Sugestões","Receber ideias dos estudantes."],
+  ["Jornal do Grêmio","Divulgar notícias e projetos escolares."],
+  ["Clube de Leitura","Incentivar a leitura entre os alunos."],
+  ["Olimpíada de Conhecimentos","Realizar desafios de várias matérias."],
+  ["Dia das Profissões","Apresentar diferentes carreiras aos estudantes."],
+  ["Campeonato de Xadrez","Organizar partidas entre os alunos."],
+  ["Desafio de Redação","Incentivar a escrita e a criatividade."],
+  ["Clube de Tecnologia","Desenvolver projetos de programação e robótica."],
+  ["Feira de Ciências","Expor pesquisas e experiências dos estudantes."],
+  ["Campanha de Arrecadação","Promover ações solidárias com autorização da direção."],
+  ["Intervalo com Jogos","Oferecer jogos educativos em atividades autorizadas."],
+  ["Concurso de Fotografia","Expor fotos de temas escolhidos pelos estudantes."],
+  ["Mural de Oportunidades","Divulgar cursos e olimpíadas estudantis."],
+  ["Reconhecimento das Turmas","Valorizar colaboração, respeito e participação."],
+  ["Reunião Aberta do Grêmio","Ouvir ideias e sugestões dos estudantes."]
+];
 
-  <section class="panel">
-    <form id="form">
-      <label for="titulo">Título da proposta</label>
-      <input id="titulo" maxlength="200" required placeholder="Ex.: Feira de profissões">
+const listaGremio = document.getElementById("lista-gremio");
 
-      <label for="descricao">Como funcionaria?</label>
-      <textarea id="descricao" maxlength="5000" required placeholder="Explique a ideia, quem poderia participar e o que seria necessário..."></textarea>
+propostasGremio.forEach((proposta, i) => {
+  const item = document.createElement("article");
+  item.className = "proposal";
 
-      <p class="muted">Não inclua dados pessoais. A proposta será enviada para análise.</p>
-      <button class="btn primary" id="enviarBtn" type="submit">Enviar para análise →</button>
-      <div id="mensagem" class="status" role="status"></div>
-    </form>
-  </section>
+  const titulo = document.createElement("h3");
+  titulo.textContent = `${i + 1}. ${proposta[0]}`;
 
-  <div class="section" id="aprovadas">
-    <h2>📣 Propostas aprovadas</h2>
-    <button class="btn" id="atualizar" type="button">↻ Atualizar</button>
-  </div>
+  const descricao = document.createElement("p");
+  descricao.textContent = proposta[1];
 
-  <section class="panel">
-    <div id="lista" class="empty">Carregando…</div>
-  </section>
-</main>
-
-<footer>Atlético Estudantil · Ideias com respeito.</footer>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAm20hYu_9kWN8YwmkSPVoO5FVZwPRzysg",
-  authDomain: "atletico-estudantil.firebaseapp.com",
-  projectId: "atletico-estudantil",
-  storageBucket: "atletico-estudantil.firebasestorage.app",
-  messagingSenderId: "1059932469682",
-  appId: "1:1059932469682:web:dadf2643c3b250903fccab",
-  measurementId: "G-25XHNCC6H1"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const $ = id => document.getElementById(id);
-
-$("form").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const titulo = $("titulo").value.trim();
-  const descricao = $("descricao").value.trim();
-  if (!titulo || !descricao) return;
-
-  const botao = $("enviarBtn");
-  botao.disabled = true;
-  $("mensagem").className = "status";
-  $("mensagem").textContent = "Enviando…";
-
-  try {
-    await addDoc(collection(db, "propostas"), {
-      titulo,
-      descricao,
-      status: "pendente",
-      createdAt: serverTimestamp()
-    });
-
-    $("form").reset();
-    $("mensagem").className = "status success";
-    $("mensagem").textContent = "Proposta enviada para análise!";
-  } catch (erro) {
-    console.error(erro);
-    $("mensagem").className = "status error";
-    $("mensagem").textContent = "Erro ao enviar. Verifique as regras do Firebase.";
-  } finally {
-    botao.disabled = false;
-  }
+  item.append(titulo, descricao);
+  listaGremio.append(item);
 });
-
-async function carregarPropostas() {
-  const lista = $("lista");
-  lista.className = "empty";
-  lista.textContent = "Carregando…";
-
-  try {
-    const resultado = await getDocs(
-      query(collection(db, "propostas"), where("status", "==", "aprovada"))
-    );
-
-    lista.replaceChildren();
-
-    if (resultado.empty) {
-      lista.className = "empty";
-      lista.textContent = "Ainda não há propostas aprovadas.";
-      return;
-    }
-
-    resultado.forEach(documento => {
-      const proposta = documento.data();
-      const artigo = document.createElement("article");
-      const titulo = document.createElement("h3");
-      const descricao = document.createElement("p");
-
-      artigo.className = "proposal";
-      titulo.textContent = proposta.titulo || "Proposta";
-      descricao.textContent = proposta.descricao || "";
-
-      artigo.append(titulo, descricao);
-      lista.append(artigo);
-    });
-  } catch (erro) {
-    console.error(erro);
-    lista.className = "empty";
-    lista.textContent = "Não foi possível carregar as propostas. Confira as permissões do Firestore.";
-  }
-}
-
-$("atualizar").addEventListener("click", carregarPropostas);
-carregarPropostas();
 </script>
-</body>
-</html>
