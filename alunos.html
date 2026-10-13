@@ -1,58 +1,180 @@
-```html
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Área dos Alunos | Atlético Estudantil</title>
+<title>Área dos alunos | Atlético Estudantil</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f1f5fb;color:#172b4d}
-header{background:#10264b;color:white;padding:25px;text-align:center}
-main{max-width:800px;margin:25px auto;padding:0 15px}
-.card{background:white;padding:22px;margin-bottom:18px;border-radius:14px;box-shadow:0 5px 20px #10264b12}
-label{display:block;font-weight:bold;margin:12px 0 6px}
-input,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}
-textarea{min-height:110px}
-button{background:#2457a7;color:white;padding:12px 18px;border:0;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:12px}
-a{color:#2457a7}
-.msg{margin-top:12px;font-weight:bold}
-.proposta{border:1px solid #dce4ef;padding:14px;border-radius:10px;margin-top:12px}
+:root {
+  --bg: #07111f;
+  --panel: #101e32;
+  --line: #263b59;
+  --text: #f3f7ff;
+  --muted: #a9b8ce;
+  --blue: #4f8cff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(ellipse at top right, #142e52, transparent 40%), var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+a { color: #9bc0ff; text-decoration: none; }
+header {
+  background: #07111f;
+  border-bottom: 1px solid #263b59;
+}
+.nav {
+  max-width: 1100px;
+  margin: auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.brand { color: white; font-weight: bold; }
+nav { display: flex; gap: 10px; flex-wrap: wrap; }
+nav a, .btn {
+  display: inline-block;
+  padding: 10px 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff08;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn.primary {
+  background: linear-gradient(135deg, #4f8cff, #285dd4);
+  border: 0;
+}
+main { max-width: 1100px; margin: auto; padding: 30px 20px 60px; }
+.hero {
+  padding: 45px;
+  border: 1px solid #6d9fff36;
+  border-radius: 26px;
+  background: linear-gradient(125deg, #102747, #0d1a2c 70%, #142d50);
+}
+.eyebrow { color: #b8d2ff; font-weight: bold; }
+h1 { font-size: clamp(2.3rem, 6vw, 4rem); line-height: 1.1; }
+h2 { line-height: 1.2; }
+p, .muted { color: var(--muted); }
+.section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px;
+  background: linear-gradient(145deg, #12223a, #0d192a);
+  margin-top: 18px;
+}
+label { display: block; font-weight: bold; margin: 12px 0 6px; }
+input, textarea {
+  width: 100%;
+  padding: 13px;
+  background: #091525;
+  color: white;
+  border: 1px solid #314865;
+  border-radius: 11px;
+  font: inherit;
+}
+textarea { min-height: 140px; resize: vertical; }
+.proposal {
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: #ffffff05;
+  border-radius: 14px;
+  margin-top: 12px;
+}
+.status { color: var(--muted); }
+.success { color: #8debc9; }
+.error { color: #ff9ba3; }
+.empty {
+  padding: 20px;
+  border: 1px dashed #3a5272;
+  border-radius: 14px;
+  color: var(--muted);
+  text-align: center;
+}
+footer {
+  text-align: center;
+  padding: 24px;
+  color: #91a4be;
+  border-top: 1px solid #ffffff12;
+}
+@media(max-width:700px) {
+  .nav { align-items: flex-start; }
+  main { padding: 20px 14px 45px; }
+  .hero, .panel { padding: 18px; }
+}
 </style>
 </head>
 <body>
 <header>
-<h1>🎓 Área dos Alunos</h1>
-<p>Participe e ajude a melhorar nossa escola!</p>
-<a href="index.html" style="color:white">← Página inicial</a>
+  <div class="nav">
+    <a class="brand" href="index.html">🏆 ATLÉTICO ESTUDANTIL</a>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="alunos.html">Alunos</a>
+      <a href="admin.html">Direção / ADM</a>
+    </nav>
+  </div>
 </header>
 
 <main>
-<section class="card">
-<h2>💡 Enviar uma proposta</h2>
-<p>Explique sua ideia com respeito. A administração vai analisar sua sugestão.</p>
-<form id="form">
-<label for="titulo">Título da proposta</label>
-<input id="titulo" maxlength="200" required placeholder="Ex.: Feira de profissões">
+  <section class="hero">
+    <span class="eyebrow">🎓 ÁREA DOS ALUNOS</span>
+    <h1>Sua ideia tem<br><span style="color:#8bb7ff">espaço aqui.</span></h1>
+    <p>Conte como podemos melhorar a escola. Explique sua ideia com clareza e respeito.</p>
+    <a class="btn primary" href="#enviar">Enviar proposta ↓</a>
+  </section>
 
-<label for="descricao">Descrição da ideia</label>
-<textarea id="descricao" maxlength="5000" required placeholder="Como essa ideia funcionaria na escola?"></textarea>
+  <div class="section" id="enviar">
+    <h2>💡 Enviar uma proposta</h2>
+    <span>Vai para análise</span>
+  </div>
 
-<button type="submit" id="enviar">Enviar proposta</button>
-<div id="mensagem" class="msg"></div>
-</form>
-</section>
+  <section class="panel">
+    <form id="form">
+      <label for="titulo">Título da proposta</label>
+      <input id="titulo" maxlength="200" required placeholder="Ex.: Feira de profissões">
 
-<section class="card">
-<h2>📣 Propostas aprovadas</h2>
-<div id="lista">Carregando propostas...</div>
-</section>
+      <label for="descricao">Como funcionaria?</label>
+      <textarea id="descricao" maxlength="5000" required placeholder="Explique a ideia, quem poderia participar e o que seria necessário..."></textarea>
+
+      <p class="muted">Não inclua dados pessoais. A proposta será enviada para análise.</p>
+      <button class="btn primary" id="enviarBtn" type="submit">Enviar para análise →</button>
+      <div id="mensagem" class="status" role="status"></div>
+    </form>
+  </section>
+
+  <div class="section" id="aprovadas">
+    <h2>📣 Propostas aprovadas</h2>
+    <button class="btn" id="atualizar" type="button">↻ Atualizar</button>
+  </div>
+
+  <section class="panel">
+    <div id="lista" class="empty">Carregando…</div>
+  </section>
 </main>
+
+<footer>Atlético Estudantil · Ideias com respeito.</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore, collection, addDoc, serverTimestamp,
-  query, where, getDocs
+  getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -67,77 +189,80 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const $ = id => document.getElementById(id);
 
-document.getElementById("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
+$("form").addEventListener("submit", async event => {
+  event.preventDefault();
 
-  const titulo = document.getElementById("titulo").value.trim();
-  const descricao = document.getElementById("descricao").value.trim();
-  const mensagem = document.getElementById("mensagem");
-  const botao = document.getElementById("enviar");
-
+  const titulo = $("titulo").value.trim();
+  const descricao = $("descricao").value.trim();
   if (!titulo || !descricao) return;
 
+  const botao = $("enviarBtn");
   botao.disabled = true;
-  mensagem.textContent = "Enviando...";
+  $("mensagem").className = "status";
+  $("mensagem").textContent = "Enviando…";
 
   try {
     await addDoc(collection(db, "propostas"), {
-      titulo: titulo,
-      descricao: descricao,
+      titulo,
+      descricao,
       status: "pendente",
       createdAt: serverTimestamp()
     });
 
-    document.getElementById("form").reset();
-    mensagem.textContent = "Proposta enviada para análise!";
+    $("form").reset();
+    $("mensagem").className = "status success";
+    $("mensagem").textContent = "Proposta enviada para análise!";
   } catch (erro) {
     console.error(erro);
-    mensagem.textContent = "Erro ao enviar. Confira as regras do Firebase.";
+    $("mensagem").className = "status error";
+    $("mensagem").textContent = "Erro ao enviar. Verifique as regras do Firebase.";
   } finally {
     botao.disabled = false;
   }
 });
 
-async function carregarAprovadas() {
-  const lista = document.getElementById("lista");
+async function carregarPropostas() {
+  const lista = $("lista");
+  lista.className = "empty";
+  lista.textContent = "Carregando…";
 
   try {
-    const q = query(
-      collection(db, "propostas"),
-      where("status", "==", "aprovada")
+    const resultado = await getDocs(
+      query(collection(db, "propostas"), where("status", "==", "aprovada"))
     );
-    const resultado = await getDocs(q);
 
     lista.replaceChildren();
 
     if (resultado.empty) {
+      lista.className = "empty";
       lista.textContent = "Ainda não há propostas aprovadas.";
       return;
     }
 
-    resultado.forEach((item) => {
-      const dados = item.data();
-      const card = document.createElement("article");
-      card.className = "proposta";
-
+    resultado.forEach(documento => {
+      const proposta = documento.data();
+      const artigo = document.createElement("article");
       const titulo = document.createElement("h3");
-      titulo.textContent = dados.titulo || "Proposta";
-
       const descricao = document.createElement("p");
-      descricao.textContent = dados.descricao || "";
 
-      card.append(titulo, descricao);
-      lista.append(card);
+      artigo.className = "proposal";
+      titulo.textContent = proposta.titulo || "Proposta";
+      descricao.textContent = proposta.descricao || "";
+
+      artigo.append(titulo, descricao);
+      lista.append(artigo);
     });
   } catch (erro) {
     console.error(erro);
-    lista.textContent = "Não foi possível carregar as propostas.";
+    lista.className = "empty";
+    lista.textContent = "Não foi possível carregar as propostas. Confira as permissões do Firestore.";
   }
 }
 
-carregarAprovadas();
+$("atualizar").addEventListener("click", carregarPropostas);
+carregarPropostas();
 </script>
 </body>
 </html>
-```
