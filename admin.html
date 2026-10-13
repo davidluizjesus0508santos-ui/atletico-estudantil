@@ -4,91 +4,113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ADM | Atlético Estudantil</title>
+<title>Central ADM | Atlético Estudantil</title>
 <style>
+:root{--bg:#07111f;--panel:#101e32;--line:#263c5b;--text:#f4f7ff;--muted:#a9bad0;--blue:#4f8cff;--green:#20b889;--red:#e05262}
 *{box-sizing:border-box}
-body{margin:0;background:#07111f;color:#f4f7ff;font-family:Arial,sans-serif;line-height:1.6}
-header{background:#0d1b30;padding:18px;border-bottom:1px solid #294263}
-nav{max-width:1100px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-a{color:#9dc2ff;text-decoration:none}
-main{max-width:1100px;margin:auto;padding:22px}
-.panel{background:#101f34;border:1px solid #294263;border-radius:16px;padding:22px;margin-bottom:20px}
-h1,h2{line-height:1.2}
-h2{color:#a8caff}
-p{color:#c0ccdc}
-label{display:block;margin-top:12px;font-weight:bold}
-input,select{width:100%;padding:12px;border-radius:9px;border:1px solid #385170;background:#07111f;color:white;font:inherit}
-button{background:#3978ed;color:white;border:0;border-radius:9px;padding:10px 14px;font-weight:bold;cursor:pointer;margin:4px}
-button:disabled{opacity:.6}
-.btn-secondary{background:#253b58}
-.btn-green{background:#16835d}
-.btn-red{background:#b93849}
-.card{background:#0a1728;border:1px solid #2b4261;border-radius:12px;padding:16px;margin:12px 0}
-.badge{display:inline-block;border-radius:20px;padding:4px 10px;background:#263b59;color:#d9e7ff;font-size:13px}
-.status{color:#8debc9}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;line-height:1.55}
+header{background:#0b1729;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav{max-width:1200px;margin:auto;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+a{color:#a8c9ff;text-decoration:none}
+main{max-width:1200px;margin:auto;padding:25px 18px 60px}
+.hero,.panel{background:linear-gradient(145deg,#12233a,#0d192a);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:20px}
+.hero{background:linear-gradient(120deg,#173867,#101e32 75%)}
+h1{font-size:clamp(27px,4vw,42px);line-height:1.15;margin:10px 0}
+h2{margin-top:0;color:#b7d1ff}
+p{color:var(--muted)}
+.eyebrow{font-size:12px;letter-spacing:2px;color:#a8c9ff;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.metric{background:#091728;border:1px solid var(--line);border-radius:15px;padding:18px}
+.metric span{color:var(--muted);font-size:14px}
+.metric strong{display:block;font-size:32px;margin-top:5px}
+.metric small{color:#94baff}
+label{display:block;font-weight:bold;margin:12px 0 6px}
+input,select{width:100%;padding:12px;background:#07111f;border:1px solid #344c6c;border-radius:10px;color:white;font:inherit}
+.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+button{border:0;border-radius:10px;padding:11px 14px;font-weight:bold;cursor:pointer;background:var(--blue);color:white}
+button:disabled{opacity:.5;cursor:wait}
+.btn-green{background:#137c5a}
+.btn-red{background:#a83244}
+.btn-gray{background:#263b57}
+.proposal{background:#091728;border:1px solid var(--line);border-radius:15px;padding:18px;margin-top:13px}
+.proposal h3{margin:0 0 8px;font-size:19px}
+.badge{display:inline-block;padding:5px 10px;border-radius:30px;background:#263b57;color:#e2edff;font-size:12px}
+.badge.pendente{background:#5b4519;color:#ffe0a0}
+.badge.aprovada{background:#104b3c;color:#9bf0d0}
+.badge.rejeitada{background:#592a35;color:#ffb7bf}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.actions button{font-size:13px}
+.message{padding:12px;border-radius:10px;background:#091728;color:#bcd3f3;white-space:pre-wrap}
+.success{color:#8debc9}
 .error{color:#ff9ba3}
-.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.metric{background:#0a1728;border:1px solid #294263;padding:15px;border-radius:12px}
-.metric strong{font-size:26px;display:block}
-.hidden{display:none}
-.muted{color:#aabbd1}
-footer{text-align:center;padding:25px;color:#9cacc2}
+.hidden{display:none!important}
+.empty{text-align:center;padding:25px;color:var(--muted);border:1px dashed #344c6c;border-radius:12px;margin-top:14px}
+.top-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+footer{text-align:center;padding:24px;color:#8194ad;border-top:1px solid #1e3048}
+@media(max-width:650px){.toolbar{grid-template-columns:1fr}main{padding:18px 12px}.hero,.panel{padding:17px}}
 </style>
 </head>
 <body>
 <header>
 <nav>
-<strong>🏆 ATLÉTICO ESTUDANTIL · ADM</strong>
+<strong>🏆 ATLÉTICO ESTUDANTIL <span style="color:#7faeff">/ ADM</span></strong>
 <div><a href="index.html">Início</a>　<a href="alunos.html">Área dos alunos</a></div>
 </nav>
 </header>
 
 <main>
-<section class="panel" id="loginPanel">
-<h1>🔐 Acesso da direção</h1>
-<p>Entre com a conta autorizada para administrar as propostas.</p>
+<section id="login" class="panel">
+<div class="eyebrow">ACESSO RESTRITO</div>
+<h1>Central da direção</h1>
+<p>Entre com a conta autorizada para gerenciar as propostas dos alunos.</p>
 <form id="loginForm">
 <label for="email">E-mail</label>
-<input id="email" type="email" required autocomplete="username">
+<input id="email" type="email" autocomplete="username" required>
 <label for="senha">Senha</label>
-<input id="senha" type="password" required autocomplete="current-password">
-<button id="loginBtn" type="submit">Entrar</button>
-<p id="loginMsg" role="status"></p>
+<input id="senha" type="password" autocomplete="current-password" required>
+<button id="entrar" type="submit" style="margin-top:16px;width:100%">Entrar na central →</button>
 </form>
+<p id="loginMsg" class="message" role="status"></p>
 </section>
 
 <section id="dashboard" class="hidden">
-<div class="panel">
-<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-<div>
-<h1>📋 Painel de propostas</h1>
-<p>Analise as ideias enviadas pelos alunos.</p>
-</div>
-<button id="sair" class="btn-secondary">Sair</button>
-</div>
-<div class="row">
-<div class="metric">Todas<strong id="total">0</strong></div>
-<div class="metric">Pendentes<strong id="pendentes">0</strong></div>
-<div class="metric">Aprovadas<strong id="aprovadas">0</strong></div>
-<div class="metric">Rejeitadas<strong id="rejeitadas">0</strong></div>
+<div class="hero">
+<div class="eyebrow">PAINEL DE CONTROLE</div>
+<h1>Gestão de propostas</h1>
+<p>Analise as sugestões, acompanhe as aprovações e mantenha a lista organizada.</p>
+<div class="top-actions">
+<button id="atualizar">↻ Atualizar agora</button>
+<button id="sair" class="btn-gray">Sair da conta</button>
 </div>
 </div>
 
-<div class="panel">
+<div class="grid">
+<div class="metric"><span>Total de propostas</span><strong id="total">0</strong><small>Registros encontrados</small></div>
+<div class="metric"><span>Em análise</span><strong id="nPendentes">0</strong><small>Aguardando decisão</small></div>
+<div class="metric"><span>Aprovadas</span><strong id="nAprovadas">0</strong><small>Visíveis aos alunos</small></div>
+<div class="metric"><span>Rejeitadas</span><strong id="nRejeitadas">0</strong><small>Não aprovadas</small></div>
+</div>
+
+<section class="panel" style="margin-top:20px">
 <h2>🔎 Encontrar propostas</h2>
-<label for="busca">Pesquisar pelo título ou descrição</label>
-<input id="busca" placeholder="Digite uma palavra...">
-<label for="filtro">Filtrar por situação</label>
+<div class="toolbar">
+<div>
+<label for="busca">Pesquisar</label>
+<input id="busca" placeholder="Título ou descrição...">
+</div>
+<div>
+<label for="filtro">Situação</label>
 <select id="filtro">
-<option value="todas">Todas</option>
-<option value="pendente">Pendentes</option>
+<option value="todas">Todas as situações</option>
+<option value="pendente">Em análise</option>
 <option value="aprovada">Aprovadas</option>
 <option value="rejeitada">Rejeitadas</option>
 </select>
-<button id="atualizar">Atualizar lista</button>
-<p id="listaMsg" role="status"></p>
-<div id="lista"></div>
 </div>
+</div>
+<p id="listaMsg" class="message" role="status">Preparando lista...</p>
+<div id="lista"></div>
+</section>
 </section>
 </main>
 
@@ -116,51 +138,50 @@ const firebaseConfig={
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getFirestore(app);
-
-const admins=[
+const administradores=[
  "waaxi2qqtrZuLEM1EzQjEJA2T3D3",
  "f93PUD9Fo3Va6OOmF2TX9wunSXp1"
 ];
-
 const el=id=>document.getElementById(id);
 let propostas=[];
+let carregando=false;
 
-function mostrarLogin(mensagem=""){
- el("loginPanel").classList.remove("hidden");
- el("dashboard").classList.add("hidden");
- el("loginMsg").textContent=mensagem;
+function mensagem(texto,tipo=""){
+ el("listaMsg").textContent=texto;
+ el("listaMsg").className="message "+tipo;
 }
-
-function mostrarPainel(){
- el("loginPanel").classList.add("hidden");
+function telaLogin(texto=""){
+ el("login").classList.remove("hidden");
+ el("dashboard").classList.add("hidden");
+ el("loginMsg").textContent=texto;
+}
+function telaPainel(){
+ el("login").classList.add("hidden");
  el("dashboard").classList.remove("hidden");
 }
 
 el("loginForm").addEventListener("submit",async e=>{
  e.preventDefault();
- el("loginBtn").disabled=true;
+ el("entrar").disabled=true;
  el("loginMsg").textContent="Entrando...";
  try{
   await signInWithEmailAndPassword(auth,el("email").value.trim(),el("senha").value);
  }catch(err){
   console.error(err);
-  mostrarLogin("Não foi possível entrar. Confira o e-mail e a senha.");
+  telaLogin("Não foi possível entrar. Confira o e-mail e a senha.");
  }finally{
-  el("loginBtn").disabled=false;
+  el("entrar").disabled=false;
  }
 });
 
 onAuthStateChanged(auth,async user=>{
- if(!user){
-  mostrarLogin();
-  return;
- }
- if(!admins.includes(user.uid)){
+ if(!user){telaLogin();return}
+ if(!administradores.includes(user.uid)){
   await signOut(auth);
-  mostrarLogin("Esta conta não tem permissão de administrador.");
+  telaLogin("Esta conta não está autorizada para administrar propostas.");
   return;
  }
- mostrarPainel();
+ telaPainel();
  await carregar();
 });
 
@@ -170,16 +191,27 @@ el("busca").addEventListener("input",renderizar);
 el("filtro").addEventListener("change",renderizar);
 
 async function carregar(){
- el("listaMsg").textContent="Carregando propostas...";
+ if(carregando)return;
+ carregando=true;
+ el("atualizar").disabled=true;
+ mensagem("Buscando propostas atualizadas no Firebase...");
  try{
-  const snap=await getDocs(query(collection(db,"propostas"),orderBy("createdAt","desc")));
+  // Busca todos os documentos, inclusive os antigos sem createdAt.
+  const snap=await getDocs(collection(db,"propostas"));
   propostas=snap.docs.map(d=>({id:d.id,...d.data()}));
-  el("listaMsg").textContent="";
+  propostas.sort((a,b)=>{
+   const ta=a.createdAt?.toMillis?.()||0;
+   const tb=b.createdAt?.toMillis?.()||0;
+   return tb-ta;
+  });
   renderizar();
+  mensagem("Lista atualizada. Registros encontrados: "+propostas.length,"success");
  }catch(err){
   console.error(err);
-  el("listaMsg").textContent="Erro ao carregar. Verifique as regras do Firestore e o acesso desta conta.";
-  el("listaMsg").className="error";
+  mensagem("Não foi possível carregar as propostas.\nErro: "+(err.code||err.message)+"\nConfira as regras do Firestore e se a conta tem permissão de administrador.","error");
+ }finally{
+  carregando=false;
+  el("atualizar").disabled=false;
  }
 }
 
@@ -187,80 +219,76 @@ function renderizar(){
  const lista=el("lista");
  lista.replaceChildren();
 
- const contagem={
-  total:propostas.length,
-  pendente:0,
-  aprovada:0,
-  rejeitada:0
- };
+ const contagem={pendente:0,aprovada:0,rejeitada:0};
  propostas.forEach(p=>{
   if(contagem[p.status]!==undefined)contagem[p.status]++;
  });
- el("total").textContent=contagem.total;
- el("pendentes").textContent=contagem.pendente;
- el("aprovadas").textContent=contagem.aprovada;
- el("rejeitadas").textContent=contagem.rejeitada;
+ el("total").textContent=propostas.length;
+ el("nPendentes").textContent=contagem.pendente;
+ el("nAprovadas").textContent=contagem.aprovada;
+ el("nRejeitadas").textContent=contagem.rejeitada;
 
  const termo=el("busca").value.trim().toLowerCase();
  const filtro=el("filtro").value;
  const filtradas=propostas.filter(p=>{
   const texto=((p.titulo||"")+" "+(p.descricao||"")).toLowerCase();
-  return texto.includes(termo)&&(filtro==="todas"||p.status===filtro);
+  const status=p.status||"pendente";
+  return texto.includes(termo)&&(filtro==="todas"||status===filtro);
  });
 
  if(!filtradas.length){
-  lista.textContent="Nenhuma proposta encontrada.";
+  const vazio=document.createElement("div");
+  vazio.className="empty";
+  vazio.textContent=propostas.length?"Nenhuma proposta corresponde à pesquisa.":"Nenhuma proposta foi encontrada no Firebase.";
+  lista.append(vazio);
   return;
  }
 
  filtradas.forEach(p=>{
   const card=document.createElement("article");
-  card.className="card";
-
+  card.className="proposal";
   const titulo=document.createElement("h3");
   titulo.textContent=p.titulo||"Proposta sem título";
-
   const descricao=document.createElement("p");
   descricao.textContent=p.descricao||"Sem descrição.";
-
-  const status=document.createElement("span");
-  status.className="badge";
-  status.textContent="Situação: "+(p.status||"pendente");
-
-  card.append(titulo,descricao,status);
+  const badge=document.createElement("span");
+  const status=p.status||"pendente";
+  badge.className="badge "+status;
+  badge.textContent=status==="pendente"?"Em análise":status==="aprovada"?"Aprovada":status==="rejeitada"?"Rejeitada":status;
+  card.append(titulo,descricao,badge);
 
   const acoes=document.createElement("div");
-  const aprovar=document.createElement("button");
-  aprovar.className="btn-green";
-  aprovar.textContent="Aprovar";
-  aprovar.addEventListener("click",()=>mudarStatus(p.id,"aprovada"));
-
-  const pendente=document.createElement("button");
-  pendente.className="btn-secondary";
-  pendente.textContent="Deixar pendente";
-  pendente.addEventListener("click",()=>mudarStatus(p.id,"pendente"));
-
-  const rejeitar=document.createElement("button");
-  rejeitar.className="btn-red";
-  rejeitar.textContent="Rejeitar";
-  rejeitar.addEventListener("click",()=>mudarStatus(p.id,"rejeitada"));
-
-  acoes.append(aprovar,pendente,rejeitar);
+  acoes.className="actions";
+  [
+   ["Aprovar","btn-green","aprovada"],
+   ["Deixar em análise","btn-gray","pendente"],
+   ["Rejeitar","btn-red","rejeitada"]
+  ].forEach(([texto,classe,novoStatus])=>{
+   const botao=document.createElement("button");
+   botao.className=classe;
+   botao.textContent=texto;
+   botao.addEventListener("click",()=>mudarStatus(p.id,novoStatus,botao));
+   acoes.append(botao);
+  });
   card.append(acoes);
   lista.append(card);
  });
 }
 
-async function mudarStatus(id,status){
+async function mudarStatus(id,status,botao){
+ botao.disabled=true;
+ mensagem("Salvando alteração...");
  try{
   await updateDoc(doc(db,"propostas",id),{status});
-  el("listaMsg").className="status";
-  el("listaMsg").textContent="Situação atualizada!";
-  await carregar();
+  const item=propostas.find(p=>p.id===id);
+  if(item)item.status=status;
+  renderizar();
+  mensagem("Situação atualizada com sucesso.","success");
  }catch(err){
   console.error(err);
-  el("listaMsg").className="error";
-  el("listaMsg").textContent="Não foi possível atualizar. Confira as permissões do Firestore.";
+  mensagem("Não foi possível salvar a alteração.\nErro: "+(err.code||err.message)+"\nConfira as permissões do Firestore.","error");
+ }finally{
+  botao.disabled=false;
  }
 }
 </script>
